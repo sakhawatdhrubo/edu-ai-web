@@ -24,6 +24,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      # Enables GitHub Pages for this repo if it isn't already (enablement: true), so the deploy
+      # step never fails with "Get Pages site failed" on the first run.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Build with Astro
         uses: withastro/action@v3
         with:
