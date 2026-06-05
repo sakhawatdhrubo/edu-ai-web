@@ -1,0 +1,29 @@
+---
+// Inline 2–4 option toggle for profile choices (language, pace, tone). Foundation §5.
+interface Props {
+  label?: string;
+  options: { key: string; bn: string }[];
+  chosen?: string;
+}
+const { label, options, chosen } = Astro.props;
+---
+<div>
+  {label && <span class="mb-1.5 block text-label text-ink-muted">{label}</span>}
+  <div class="flex rounded-pill bg-surface-sunken p-1" role="radiogroup" aria-label={label}>
+    {options.map((o) => {
+      const on = o.key === chosen;
+      return (
+        <button
+          type="button"
+          role="radio"
+          aria-checked={on}
+          class={`min-h-[40px] flex-1 rounded-pill px-3 text-label font-medium ${
+            on ? 'bg-surface-raised text-primary shadow-sm' : 'text-ink-muted'
+          }`}
+        >
+          {o.bn}
+        </button>
+      );
+    })}
+  </div>
+</div>

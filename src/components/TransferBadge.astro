@@ -1,0 +1,11 @@
+---
+// ✨ transfer-verified marker. Appears ONLY on genuinely transfer-passed outcomes. Foundation §5.
+interface Props {
+  label?: boolean;
+}
+const { label = false } = Astro.props;
+---
+<span class="inline-flex items-center gap-1 text-mastery" title="transfer-verified">
+  <span aria-hidden="true">✨</span>
+  {label && <span class="text-meta font-medium">যাচাই হয়েছে</span>}
+</span>

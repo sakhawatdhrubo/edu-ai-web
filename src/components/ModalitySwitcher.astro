@@ -1,0 +1,38 @@
+---
+// Bottom sheet ("অন্যভাবে বুঝতে চাও?"), 5 modality tiles. Preserves ALL session state on switch.
+// Preference is the default, never a lock. Framed as comfort, not "your learning style". §5/§8.
+import Sheet from './Sheet.astro';
+interface Props {
+  current?: string; // 'video'|'text'|'example'|'socratic'|'animation'
+  open?: boolean;
+}
+const { current = 'video', open = true } = Astro.props;
+const MODES = [
+  { key: 'video', bn: 'ভিডিও', icon: '🎬' },
+  { key: 'text', bn: 'লেখা', icon: '📝' },
+  { key: 'example', bn: 'উদাহরণ', icon: '🔢' },
+  { key: 'socratic', bn: 'প্রশ্ন করে', icon: '💬' },
+  { key: 'animation', bn: 'অ্যানিমেশন', icon: '✨' },
+];
+---
+<Sheet title="অন্যভাবে বুঝতে চাও?" open={open}>
+  <div class="grid grid-cols-3 gap-2.5 pb-1">
+    {MODES.map((m) => {
+      const on = m.key === current;
+      return (
+        <button
+          type="button"
+          aria-pressed={on}
+          class={`flex min-h-[88px] flex-col items-center justify-center gap-1.5 rounded-card border p-2 ${
+            on ? 'border-primary bg-primary-soft' : 'border-border bg-surface-raised hover:bg-surface-sunken'
+          }`}
+        >
+          <span class="text-[26px]" aria-hidden="true">{m.icon}</span>
+          <span class={`text-label ${on ? 'font-semibold text-primary' : 'text-ink'}`}>{m.bn}</span>
+          {on && <span class="text-meta text-ink-muted">এখন</span>}
+        </button>
+      );
+    })}
+  </div>
+  <p class="mt-2 text-meta text-ink-muted">যেকোনো সময় বদলাতে পারো — তোমার অগ্রগতি একই থাকবে।</p>
+</Sheet>

@@ -1,0 +1,21 @@
+---
+// OTP entry (thin onboarding stub). Foundation §5.
+import { bnNum } from '@lib/mastery';
+interface Props {
+  length?: number;
+  filled?: number; // how many boxes show a digit (mockup)
+}
+const { length = 4, filled = 2 } = Astro.props;
+---
+<div class="flex justify-center gap-2.5" role="group" aria-label="OTP">
+  {Array.from({ length }).map((_, i) => (
+    <div
+      class={`grid h-13 w-12 place-items-center rounded-card border text-h2 font-semibold ${
+        i < filled ? 'border-primary bg-primary-soft text-ink' : 'border-border bg-surface-sunken text-ink-faint'
+      }`}
+      style="height:52px"
+    >
+      {i < filled ? bnNum((i + 3) % 10) : ''}
+    </div>
+  ))}
+</div>

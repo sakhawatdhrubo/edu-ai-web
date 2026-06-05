@@ -1,0 +1,120 @@
+---
+// Chapter 4 — Session Chooser (hub). Today's top-3 directives, each with a transparent WHY.
+// Student can always self-pick. Confirm before a session starts. Agent: Planner.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomNav from '@components/BottomNav.astro';
+import Card from '@components/Card.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import WhyChip from '@components/WhyChip.astro';
+import MasteryBar from '@components/MasteryBar.astro';
+import Sheet from '@components/Sheet.astro';
+import { bnNum } from '@lib/mastery';
+import { outcomes, suggestions } from '@data/demo';
+const kindMeta: Record<string, { tag: string; tone: string }> = {
+  review: { tag: 'রিভিশন', tone: 'bg-info-soft text-info' },
+  new: { tag: 'নতুন', tone: 'bg-mastery-soft text-mastery' },
+  misconception: { tag: 'ভুল ধারণা', tone: 'bg-struggle-soft text-struggle' },
+};
+---
+<CatalogLayout slug="chooser">
+  <ScreenSection
+    n={1}
+    title="আজ কী পড়ব"
+    en="Chooser (default)"
+    note="শীর্ষ ৩ পরামর্শ, শীর্ষটি প্রাধান্যে। প্রতিটির পেছনে কারণ খোলা — কৃষ্ণবাক্স নয়।"
+    agents="Planner"
+  >
+    <PhoneFrame caption="আজ কী পড়ব" state="default">
+      <AppShell>
+        <TopBar slot="top" title="আজ কী পড়ব?" back />
+        <div class="space-y-3">
+          {suggestions.map((s, i) => {
+            const m = kindMeta[s.kind];
+            const primary = i === 0;
+            return (
+              <Card tone={primary ? 'soft' : 'raised'} class="space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class={`rounded-pill px-2 py-0.5 text-meta font-medium ${m.tone}`}>{m.tag}</span>
+                  <span class="nums text-meta text-ink-muted">~{bnNum(s.minutes)} মিনিট</span>
+                </div>
+                <h2 class="text-body font-semibold text-ink">{s.bn}</h2>
+                <WhyChip reason={s.why} label="কেন এটা?" />
+                {primary ? (
+                  <PrimaryCTA href={url('/c/core-loop')}>এটা শুরু করি</PrimaryCTA>
+                ) : (
+                  <SecondaryButton href={url('/c/core-loop')} class="w-full">বেছে নাও</SecondaryButton>
+                )}
+              </Card>
+            );
+          })}
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="নিজে বেছে নাও"
+    en="Self-pick outcomes"
+    note="পরামর্শ পছন্দ না হলে নিয়ন্ত্রণ ছাত্রের হাতেই — যেকোনো আউটকাম সরাসরি ধরা যায়।"
+    agents="Planner"
+  >
+    <PhoneFrame caption="নিজে বাছাই" state="self-pick">
+      <AppShell>
+        <TopBar slot="top" title="নিজে বেছে নাও" back />
+        <div class="space-y-2">
+          <p class="text-label text-ink-muted">যেকোনো একটা টপিকে ট্যাপ করো:</p>
+          {outcomes.map((o) => (
+            <button class="block w-full rounded-card border border-border bg-surface-raised p-3 text-left hover:bg-surface-sunken">
+              <MasteryBar label={o.bn} mastery={o.mastery} attempts={o.attempts} transfer={o.transfer} />
+            </button>
+          ))}
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="শুরুর আগে নিশ্চিত করা"
+    en="Confirm sheet"
+    note="সেশন কত লম্বা ও কী নিয়ে — স্পষ্ট প্রত্যাশা। শুরুর আগে সম্মতি, আকস্মিকতা নয়।"
+    agents="Planner"
+  >
+    <PhoneFrame caption="কনফার্ম শিট" state="confirm">
+      <AppShell>
+        <TopBar slot="top" title="আজ কী পড়ব?" back />
+        <div class="space-y-3 opacity-60">
+          <Card tone="soft" class="h-24"></Card>
+          <Card class="h-24"></Card>
+        </div>
+        <Sheet title="ত্বরণ — আরেকটু পাকা করি">
+          <div class="space-y-3 pb-1">
+            <div class="flex items-center justify-between text-label">
+              <span class="text-ink-muted">সময়</span>
+              <span class="nums font-medium text-ink">~১২ মিনিট</span>
+            </div>
+            <div class="flex items-center justify-between text-label">
+              <span class="text-ink-muted">ধরন</span>
+              <span class="font-medium text-ink">অনুশীলন + ব্যাখ্যা</span>
+            </div>
+            <div class="flex items-center justify-between text-label">
+              <span class="text-ink-muted">এখন</span>
+              <span class="font-medium text-ink">অনুশীলনকারী → দক্ষ লক্ষ্য</span>
+            </div>
+            <PrimaryCTA href={url('/c/core-loop')}>চলো শুরু করি</PrimaryCTA>
+          </div>
+        </Sheet>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

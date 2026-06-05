@@ -1,0 +1,32 @@
+---
+// Misconception confrontation: "অনেক ছাত্র মনে করে X, কিন্তু আসলে Y, কারণ Z" + repair probe.
+// Foundation §5/§7. Confront pattern, then a probe; passing marks the misconception repaired.
+import Card from './Card.astro';
+import ReportButton from './ReportButton.astro';
+interface Props {
+  x: string; // the common wrong belief
+  y: string; // what is actually true
+  z: string; // why
+  probe?: string; // the repair-check question
+}
+const { x, y, z, probe } = Astro.props;
+---
+<Card tone="soft" class="space-y-3 border-info/30">
+  <div class="flex items-center gap-2 text-label font-semibold text-info">
+    <span aria-hidden="true">🔍</span> একটু খেয়াল করি
+  </div>
+  <p class="text-body leading-relaxed text-ink">
+    অনেক ছাত্র মনে করে <span class="font-semibold">{x}</span>, কিন্তু আসলে
+    <span class="font-semibold text-mastery"> {y}</span> — কারণ {z}।
+  </p>
+  {probe && (
+    <div class="rounded-card border border-border bg-surface-raised p-3">
+      <p class="mb-2 text-label font-medium text-ink">{probe}</p>
+      <div class="flex gap-2">
+        <button class="h-10 flex-1 rounded-pill border border-border bg-surface-raised text-label text-ink hover:bg-surface-sunken">হ্যাঁ</button>
+        <button class="h-10 flex-1 rounded-pill border border-border bg-surface-raised text-label text-ink hover:bg-surface-sunken">না</button>
+      </div>
+    </div>
+  )}
+  <ReportButton />
+</Card>

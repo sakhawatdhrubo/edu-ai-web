@@ -1,0 +1,16 @@
+---
+// Lower-emphasis action. Skip is equally prominent to Accept — no dark-pattern weighting (§5).
+interface Props {
+  href?: string;
+  variant?: 'outline' | 'text';
+  class?: string;
+}
+const { href, variant = 'outline', class: cls = '' } = Astro.props;
+const base = 'inline-flex h-11 items-center justify-center gap-1.5 rounded-pill px-4 text-label font-medium';
+const tone =
+  variant === 'text'
+    ? 'text-ink-muted hover:text-ink'
+    : 'border border-border bg-surface-raised text-ink hover:bg-surface-sunken';
+const Tag = href ? 'a' : 'button';
+---
+<Tag href={href} class={`${base} ${tone} ${cls}`}><slot /></Tag>

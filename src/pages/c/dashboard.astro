@@ -1,0 +1,134 @@
+---
+// Chapter 3 — Dashboard / Home (hub, tab 1 "পড়া"). Day's starting point: greeting, streak,
+// today's single clear next action, light chapter progress. Calm, no metric wall. Agent: Planner.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomNav from '@components/BottomNav.astro';
+import Card from '@components/Card.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import StreakChip from '@components/StreakChip.astro';
+import SkillTitleBadge from '@components/SkillTitleBadge.astro';
+import MasteryBar from '@components/MasteryBar.astro';
+import WhyChip from '@components/WhyChip.astro';
+import Banner from '@components/Banner.astro';
+import Skeleton from '@components/Skeleton.astro';
+import { bnNum } from '@lib/mastery';
+import { student, outcomes, suggestions } from '@data/demo';
+const top = suggestions[0];
+---
+<CatalogLayout slug="dashboard">
+  <ScreenSection
+    n={1}
+    title="ড্যাশবোর্ড"
+    en="Home (default)"
+    note="একটি স্পষ্ট পরবর্তী কাজ — সিদ্ধান্ত-ক্লান্তি নয়। কারণ সবসময় এক ট্যাপ দূরে (WhyChip)।"
+    agents="Planner · Companion"
+  >
+    <PhoneFrame caption="হোম — আজকের পড়া" state="default">
+      <AppShell>
+        <TopBar slot="top" title={`শুভ ${student.greetingTime}, ${student.name}`} action="🔔" actionLabel="নোটিফিকেশন" />
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <StreakChip days={student.streakDays} freezes={student.freezes} />
+            <SkillTitleBadge mastery={0.42} size="sm" />
+          </div>
+
+          <Card tone="soft" class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-label font-semibold text-primary">আজকের পড়া</span>
+              <span class="nums text-meta text-ink-muted">~{bnNum(top.minutes)} মিনিট</span>
+            </div>
+            <h2 class="text-h2 font-semibold text-ink">{top.bn}</h2>
+            <WhyChip reason={top.why} label="কেন এটা আজ?" />
+            <PrimaryCTA href={url('/c/chooser')}>শুরু করি</PrimaryCTA>
+          </Card>
+
+          <Card class="space-y-1">
+            <div class="mb-1 flex items-center justify-between">
+              <h3 class="text-label font-semibold text-ink">গতি অধ্যায়</h3>
+              <SecondaryButton href={url('/c/progress')} variant="text" class="h-auto px-0">সব দেখো →</SecondaryButton>
+            </div>
+            {outcomes.slice(0, 3).map((o) => (
+              <MasteryBar label={o.bn} mastery={o.mastery} transfer={o.transfer} />
+            ))}
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="প্রথম দিন"
+    en="Empty / first-day"
+    note="ইতিহাস নেই — খালি অবস্থা শাস্তি নয়, আমন্ত্রণ। স্ট্রিক/হিটম্যাপের বদলে এক উষ্ণ ধাক্কা।"
+    agents="Companion"
+  >
+    <PhoneFrame caption="হোম — প্রথম দিন" state="empty">
+      <AppShell>
+        <TopBar slot="top" title={`স্বাগতম, ${student.name}`} />
+        <div class="flex h-full flex-col items-center justify-center px-2 text-center">
+          <div class="text-[44px]" aria-hidden="true">🌅</div>
+          <h2 class="mt-3 text-h2 font-semibold text-ink">আজই শুরুর দিন</h2>
+          <p class="mt-1 text-body leading-relaxed text-ink-muted">প্রথম ১০ মিনিটের ক্লাসটা একদম হালকা — চলো পরিচয় করি।</p>
+          <div class="mt-6 w-full"><PrimaryCTA href={url('/c/chooser')}>প্রথম ক্লাস শুরু</PrimaryCTA></div>
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="পরিকল্পনা লোড হচ্ছে"
+    en="Loading"
+    note="LLM পরিকল্পনা বানানোর সময় স্ক্রিন ফাঁকা হয় না — কার্ডের ভেতরেই স্কেলিটন, চারপাশ জীবন্ত।"
+    agents="Planner"
+  >
+    <PhoneFrame caption="হোম — লোডিং" state="loading">
+      <AppShell>
+        <TopBar slot="top" title={`শুভ ${student.greetingTime}, ${student.name}`} />
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <StreakChip days={student.streakDays} freezes={student.freezes} />
+          </div>
+          <Card tone="soft" class="space-y-3">
+            <span class="text-label font-semibold text-primary">আজকের পড়া সাজাচ্ছি…</span>
+            <Skeleton lines={3} />
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="বিরতির পর ফিরে আসা"
+    en="Returning after a break"
+    note="স্ট্রিক ভাঙলে লজ্জা নয় — freeze নীরবে রক্ষা করে। বার্তা স্বাগত জানায়, খোঁটা দেয় না।"
+    agents="Companion · Planner"
+  >
+    <PhoneFrame caption="হোম — কামব্যাক" state="comeback">
+      <AppShell>
+        <TopBar slot="top" title={`আবার দেখা হলো, ${student.name}`} />
+        <div class="space-y-4">
+          <Banner variant="info" icon="❄️">৩ দিন পর ফিরেছ — তোমার একটা freeze ব্যবহার করে স্ট্রিক টিকিয়ে রেখেছি। চিন্তা নেই।</Banner>
+          <Card tone="soft" class="space-y-3">
+            <span class="text-label font-semibold text-primary">হালকা করে ফিরি</span>
+            <h2 class="text-h2 font-semibold text-ink">আগের ত্বরণটা একটু ঝালিয়ে নিই</h2>
+            <WhyChip reason="কয়েকদিন বিরতির পর সহজ রিভিশন দিয়ে শুরু করলে আত্মবিশ্বাস ফেরে।" label="কেন রিভিশন?" />
+            <PrimaryCTA href={url('/c/core-loop')}>শুরু করি</PrimaryCTA>
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

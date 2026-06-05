@@ -1,0 +1,36 @@
+---
+// Linear mastery bar (dashboard heatmap rows). Color + icon + Bangla label — never color alone.
+import { tierFor, bnNum } from '@lib/mastery';
+import TransferBadge from './TransferBadge.astro';
+interface Props {
+  label: string; // outcome name (Bangla)
+  mastery: number; // 0..1
+  transfer?: boolean;
+  attempts?: number;
+}
+const { label, mastery, transfer = false, attempts } = Astro.props;
+const t = tierFor(mastery);
+const pct = Math.round(mastery * 100);
+const fill = {
+  faint: 'bg-ink-faint',
+  struggle: 'bg-struggle',
+  info: 'bg-info',
+  mastery: 'bg-mastery',
+}[t.tone];
+const icon = mastery >= 0.6 ? '↑' : mastery >= 0.4 ? '→' : '•';
+---
+<div class="py-1.5">
+  <div class="mb-1 flex items-center justify-between gap-2">
+    <span class="text-label text-ink">{label}</span>
+    <span class="flex items-center gap-1.5 text-meta text-ink-muted">
+      {transfer && <TransferBadge />}
+      <span>{t.title}</span>
+    </span>
+  </div>
+  <div class="h-2.5 w-full overflow-hidden rounded-pill bg-surface-sunken" role="img" aria-label={`${label}: ${t.title}`}>
+    <div class={`h-full rounded-pill ${fill}`} style={`width:${pct}%`}></div>
+  </div>
+  {attempts !== undefined && (
+    <span class="mt-0.5 block text-meta text-ink-faint">{bnNum(attempts)} বার চেষ্টা</span>
+  )}
+</div>

@@ -1,0 +1,37 @@
+---
+// Catalog wrapper: renders one screen inside a ~390px device frame with a caption + optional
+// state-variant badge. On a phone it is near full-width; on desktop it is a centered device column.
+// Used by chapter pages to show "default + ▸ variants" side by side (Foundation §9 conventions).
+interface Props {
+  caption?: string;
+  /** state badge: e.g. 'default' | 'loading' | 'empty' | 'error' | 'offline' | 'playful tone' */
+  state?: string;
+  /** device viewport height in px */
+  height?: number;
+}
+const { caption, state, height = 740 } = Astro.props;
+const stateTone: Record<string, string> = {
+  default: 'bg-primary-soft text-primary',
+  loading: 'bg-surface-sunken text-ink-muted',
+  empty: 'bg-surface-sunken text-ink-muted',
+  error: 'bg-info-soft text-info',
+  offline: 'bg-info-soft text-info',
+};
+const tone = (state && stateTone[state]) || 'bg-struggle-soft text-struggle';
+---
+<figure class="m-0 w-full max-w-phone">
+  {(caption || state) && (
+    <figcaption class="mb-2 flex items-center gap-2 px-1">
+      {caption && <span class="text-label font-semibold text-ink">{caption}</span>}
+      {state && <span class={`rounded-pill px-2 py-0.5 text-meta font-medium ${tone}`}>▸ {state}</span>}
+    </figcaption>
+  )}
+  <div
+    class="relative overflow-hidden rounded-[28px] border-[6px] border-[#0c0f13] bg-surface shadow-card dark:border-[#05070a]"
+    style={`height:${height}px`}
+  >
+    <div class="h-full">
+      <slot />
+    </div>
+  </div>
+</figure>

@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'edu-ai — শেখার যাত্রা',
+  description = 'Bangla-first AI physics tutor — full-app student UI mockup',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+
+    <!-- Bangla-first fonts. Noto Sans Bengali carries Latin glyphs so mixed lines stay unified.
+         (Mockup uses Google Fonts CDN; production self-hosts subset woff2 per Foundation §3.) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- No flash of wrong theme: set before paint. Default = OS preference, persisted choice wins. -->
+    <script is:inline>
+      (function () {
+        try {
+          const saved = localStorage.getItem('edu-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const dark = saved ? saved === 'dark' : prefersDark;
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <!-- Global theme toggle handler (used by any [data-theme-toggle] button). -->
+    <script is:inline>
+      document.addEventListener('click', function (e) {
+        const t = e.target.closest('[data-theme-toggle]');
+        if (!t) return;
+        const dark = document.documentElement.classList.toggle('dark');
+        try {
+          localStorage.setItem('edu-theme', dark ? 'dark' : 'light');
+        } catch (e) {}
+      });
+    </script>
+  </body>
+</html>

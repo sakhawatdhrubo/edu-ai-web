@@ -1,0 +1,206 @@
+---
+// Chapter 5 — Core Tutor Loop (takeover). The heart: greet → warmup → question (confidence →
+// answer → diagnostic feedback) → explanation → summary. PhaseStrip keeps the student oriented.
+// Wrong answers are diagnostic events, never red. Agents: Orchestrator · Tutor · Examiner · Grader.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import PhaseStrip from '@components/PhaseStrip.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import QuestionCard from '@components/QuestionCard.astro';
+import AnswerFeedback from '@components/AnswerFeedback.astro';
+import HintLadder from '@components/HintLadder.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+import Stepper from '@components/Stepper.astro';
+import Card from '@components/Card.astro';
+import SkillTitleBadge from '@components/SkillTitleBadge.astro';
+import LevelUpOverlay from '@components/LevelUpOverlay.astro';
+---
+<CatalogLayout slug="core-loop">
+  <ScreenSection
+    n={1}
+    title="অভ্যর্থনা"
+    en="Greet"
+    note="সেশনের প্রথম মুহূর্ত ব্যক্তিগত ও উষ্ণ। PhaseStrip শুরু থেকেই দেখায় যাত্রা কতটা।"
+    agents="Orchestrator · Companion"
+  >
+    <PhoneFrame caption="শুরু" state="default">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" actionLabel="অন্যভাবে বোঝাও" />
+        <PhaseStrip slot="top" current={0} />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <CompanionBanner kind="affirm">
+              চলো রিফাত, আজ ত্বরণটা একদম পরিষ্কার করে ফেলি। গতকাল প্রায় পেরেই গিয়েছিলে — আজ শেষ করব।
+            </CompanionBanner>
+          </div>
+          <PrimaryCTA href="#">চলো শুরু করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="প্রশ্ন + আত্মবিশ্বাস"
+    en="Question (answering)"
+    note="প্রতিটি প্রশ্নে আত্মবিশ্বাস স্লাইডার বাধ্যতামূলক — ক্যালিব্রেশন ডেটা। Submit ও Skip সমান প্রকট।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="প্রশ্ন" state="default">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" actionLabel="অন্যভাবে বোঝাও" />
+        <PhaseStrip slot="top" current={2} />
+        <QuestionCard
+          stem="৬০ kg ভরের একটি বস্তুর উপর ১২০ N বল প্রয়োগ করা হলো। ত্বরণ কত?"
+          mathTex="F = ma"
+          type="numeric"
+          confidence={4}
+          contextTag="বাস্তব উদাহরণ"
+          why="তুমি F=ma জানো — এবার দেখি প্রয়োগ করতে পারো কিনা।"
+        />
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">উত্তর দাও</PrimaryCTA>
+          <SecondaryButton class="shrink-0">পরে দেখব</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="সঠিক উত্তর"
+    en="Feedback — correct"
+    note="অভিনন্দন ছাত্রের নির্দিষ্ট উত্তর উল্লেখ করে — কখনো গদবাঁধা 'ভালো করেছ' নয়। অগ্রগতি ধাপে, ফ্লোটে নয়।"
+    agents="Grader · Companion"
+  >
+    <PhoneFrame caption="সঠিক" state="correct">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={2} />
+        <div class="space-y-4">
+          <QuestionCard
+            stem="৬০ kg ভরের একটি বস্তুর উপর ১২০ N বল প্রয়োগ করা হলো। ত্বরণ কত?"
+            mathTex="F = ma"
+            type="numeric"
+            confidence={4}
+          />
+          <AnswerFeedback
+            correct={true}
+            answer="২ m/s²"
+            masteryDelta="+ একধাপ"
+            why="a = F/m = ১২০ / ৬০ = ২ — তুমি ঠিক পথেই হেঁটেছ।"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">পরের প্রশ্ন</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="ভুল = রোগনির্ণয়"
+    en="Feedback — wrong + hint gate"
+    note="ভুল উত্তর নিরপেক্ষ-উষ্ণ, লাল নয়, 'ভুল!' নয়। উৎপাদনশীল সংগ্রামের গেট — সাহায্য দৃশ্যমান কিন্তু লকড।"
+    agents="Grader · Diagnostician · Tutor"
+  >
+    <PhoneFrame caption="ভুল + হিন্ট গেট" state="diagnostic">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={2} />
+        <div class="space-y-4">
+          <AnswerFeedback
+            correct={false}
+            answer="৭২০০ m/s²"
+            why="মনে হচ্ছে ভাগের জায়গায় গুণ করেছ — F আর m-এর সম্পর্কটা একসাথে দেখি।"
+          />
+          <HintLadder state="locked" countdown={14} charCount={3} />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">আবার চেষ্টা করি</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={5}
+    title="ব্যাখ্যা ধাপে ধাপে"
+    en="Explanation"
+    note="ব্যাখ্যা পর্বে ওয়ার্কড-এক্সাম্পল, ফেডিং — শক্ত ছাত্রের জন্য বেশি ফাঁক। ⚙ দিয়ে মডালিটি বদল।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="ব্যাখ্যা" state="default">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" actionLabel="অন্যভাবে বোঝাও" />
+        <PhaseStrip slot="top" current={3} />
+        <div class="space-y-4">
+          <Card tone="soft" class="text-body leading-relaxed text-ink">
+            ত্বরণ মানে বেগ কত দ্রুত বদলাচ্ছে। সূত্র <span class="font-semibold">a = F/m</span> — চলো ধাপে ধাপে বসাই।
+          </Card>
+          <Stepper
+            revealed={2}
+            steps={[
+              { text: 'যা জানি লিখি:', tex: 'F = 120\\,\\text{N},\\quad m = 60\\,\\text{kg}' },
+              { text: 'সূত্রে বসাই:', tex: 'a = \\tfrac{F}{m} = \\tfrac{120}{60}' },
+              { text: 'হিসাব করি — এবার তুমি বলো:' },
+            ]}
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">বুঝেছি, পরের ধাপ</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={6}
+    title="সারসংক্ষেপ"
+    en="Session summary"
+    note="সেশন শেষে শান্ত সারসংক্ষেপ — কী ছোঁয়া হলো, কোন স্কিল-টাইটেল বদলালো। লেভেল-আপ মাপা উদযাপন, কনফেটি নয়।"
+    agents="Planner · Companion"
+  >
+    <PhoneFrame caption="সারসংক্ষেপ" state="default">
+      <AppShell>
+        <TopBar slot="top" title="আজকের সারসংক্ষেপ" />
+        <PhaseStrip slot="top" current={6} />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <CompanionBanner kind="affirm" report={false}>
+              আজ ত্বরণে তুমি সত্যিই এগিয়েছ — ৫টার মধ্যে ৪টা ঠিক, আর ভুলটাও নিজে শুধরেছ।
+            </CompanionBanner>
+            <Card class="space-y-3">
+              <h2 class="text-h2 font-semibold text-ink">আজ যা হলো</h2>
+              <div class="flex items-center justify-between">
+                <span class="text-body text-ink">ত্বরণ</span>
+                <div class="flex items-center gap-2 text-meta text-ink-muted">
+                  <SkillTitleBadge mastery={0.42} size="sm" /><span aria-hidden="true">→</span><SkillTitleBadge mastery={0.62} size="sm" />
+                </div>
+              </div>
+            </Card>
+          </div>
+          <PrimaryCTA href={url('/c/dashboard')}>শেষ করো</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+
+    <PhoneFrame caption="লেভেল-আপ মুহূর্ত" state="level-up">
+      <AppShell>
+        <TopBar slot="top" title="আজকের সারসংক্ষেপ" />
+        <PhaseStrip slot="top" current={6} />
+        <div class="space-y-4 opacity-50">
+          <Card class="h-28"></Card>
+        </div>
+        <LevelUpOverlay toMastery={0.62} />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

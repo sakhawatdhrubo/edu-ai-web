@@ -1,0 +1,120 @@
+---
+// Chapter 9 — Mock Exam (takeover, reached from "রিভিশন" tab). Rehearsal of the real exam: timer,
+// formula sheet allowed (mirrors NCTB), calm single-question focus, then a diagnostic review — never
+// a bare score. Agents: Examiner · Grader · Diagnostician.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import QuestionCard from '@components/QuestionCard.astro';
+import FormulaPanel from '@components/FormulaPanel.astro';
+import Banner from '@components/Banner.astro';
+import Card from '@components/Card.astro';
+import MasteryBar from '@components/MasteryBar.astro';
+import ProgressDots from '@components/ProgressDots.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+import { outcomes } from '@data/demo';
+---
+<CatalogLayout slug="mock-exam">
+  <ScreenSection
+    n={1}
+    title="মক পরীক্ষার আগে"
+    en="Mock intro"
+    note="স্পষ্ট প্রত্যাশা: সময়, প্রশ্নসংখ্যা, ফর্মুলা শিট আছে। চাপ কমাতে মনে করানো — এটা মহড়া, আসল নয়।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="ইন্ট্রো" state="default">
+      <AppShell>
+        <TopBar slot="top" title="মক পরীক্ষা — গতি" back />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <Banner variant="info" icon="📝">৩০ মিনিট · ১৫টি প্রশ্ন · ফর্মুলা শিট খোলা থাকবে (আসল পরীক্ষার মতোই)।</Banner>
+            <Card class="space-y-2 text-body leading-relaxed text-ink">
+              <p>এটা মহড়া — ফল দিয়ে বিচার হবে না। শেষে দেখব কোথায় শক্ত, কোথায় আরেকটু লাগবে।</p>
+              <p class="text-label text-ink-muted">মাঝপথে থামলেও চলবে; যেখানে ছিলে সেখান থেকেই ফিরবে।</p>
+            </Card>
+          </div>
+          <PrimaryCTA href="#">শুরু করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="পরীক্ষার প্রশ্ন"
+    en="Exam question"
+    note="শীর্ষবারে টাইমার ও 📘 ফর্মুলা। একক প্রশ্নে মনোযোগ; পরের প্রশ্ন ও ফ্ল্যাগ থাম্ব-জোনে।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="প্রশ্ন ৪/১৫" state="in-exam">
+      <AppShell>
+        <TopBar slot="top" title="মক পরীক্ষা" timer="২২:১০" action="📘" actionLabel="ফর্মুলা শিট" />
+        <div class="space-y-4">
+          <ProgressDots total={15} current={3} showCount />
+          <QuestionCard
+            stem="স্থিরাবস্থা থেকে শুরু করে একটি গাড়ি ৫ s-এ ১৫ m/s বেগে পৌঁছায়। অতিক্রান্ত দূরত্ব কত?"
+            mathTex="s = ut + \tfrac{1}{2}at^2"
+            type="numeric"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">পরের প্রশ্ন</PrimaryCTA>
+          <SecondaryButton class="shrink-0">🚩 ফ্ল্যাগ</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="ফর্মুলা শিট"
+    en="Formula panel"
+    note="📘 ওভারলে — আলাদা রুট নয়, সেশন-স্টেট অটুট। আসল পরীক্ষার অনুমোদিত সূত্রই কেবল।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="ফর্মুলা প্যানেল" state="formula open">
+      <AppShell>
+        <TopBar slot="top" title="মক পরীক্ষা" timer="২১:৪৮" action="📘" actionLabel="ফর্মুলা শিট" />
+        <div class="space-y-4 opacity-50">
+          <ProgressDots total={15} current={3} />
+          <Card class="h-40"></Card>
+        </div>
+        <FormulaPanel open={true} />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="রিভিউ = রোগনির্ণয়"
+    en="Mock review"
+    note="খালি স্কোর নয় — কোন আউটকামে শক্ত, কোথায় ফাঁক, পরের পদক্ষেপ কী। ফল একটি মানচিত্র, রায় নয়।"
+    agents="Grader · Diagnostician · Planner"
+  >
+    <PhoneFrame caption="রিভিউ" state="result">
+      <AppShell>
+        <TopBar slot="top" title="মক রিভিউ" back />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <CompanionBanner kind="affirm" report={false}>
+              ১৫-এ ১১ — সমীকরণে বেশ পাকা! গ্রাফের প্রশ্নগুলোতেই কেবল একটু সময় দিতে হবে।
+            </CompanionBanner>
+            <Card class="space-y-1">
+              <h2 class="mb-1 text-h2 font-semibold text-ink">আউটকাম অনুযায়ী</h2>
+              {outcomes.map((o) => (
+                <MasteryBar label={o.bn} mastery={o.mastery} attempts={o.attempts} transfer={o.transfer} />
+              ))}
+            </Card>
+          </div>
+          <PrimaryCTA href={url('/c/chooser')}>দুর্বল জায়গা ধরে পড়ি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

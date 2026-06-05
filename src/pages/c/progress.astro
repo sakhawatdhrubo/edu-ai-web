@@ -1,0 +1,151 @@
+---
+// Chapter 11 — Progress & Identity (hub, tab 2 "অগ্রগতি"). Growth shown as a picture, never a raw
+// number: outcome heatmap, mastery rings, transfer badges, journey timeline, misconception log.
+// Agents: Diagnostician · Planner.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomNav from '@components/BottomNav.astro';
+import Card from '@components/Card.astro';
+import MasteryBar from '@components/MasteryBar.astro';
+import MasteryRing from '@components/MasteryRing.astro';
+import SkillTitleBadge from '@components/SkillTitleBadge.astro';
+import StreakChip from '@components/StreakChip.astro';
+import TransferBadge from '@components/TransferBadge.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import { bnNum } from '@lib/mastery';
+import { student, outcomes, misconceptions } from '@data/demo';
+---
+<CatalogLayout slug="progress">
+  <ScreenSection
+    n={1}
+    title="হিটম্যাপ"
+    en="Outcome heatmap"
+    note="প্রতিটি আউটকাম একটি বার — রঙ + আইকন + স্কিল-টাইটেল, কখনো শুধু রঙ নয়। ✨ = ট্রান্সফার-যাচাই হয়েছে।"
+    agents="Diagnostician"
+  >
+    <PhoneFrame caption="অগ্রগতি — হিটম্যাপ" state="default">
+      <AppShell>
+        <TopBar slot="top" title="তোমার অগ্রগতি" />
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <StreakChip days={student.streakDays} freezes={student.freezes} />
+            <span class="text-meta text-ink-muted">গতি অধ্যায়</span>
+          </div>
+          <Card class="space-y-1">
+            {outcomes.map((o) => (
+              <MasteryBar label={o.bn} mastery={o.mastery} attempts={o.attempts} transfer={o.transfer} />
+            ))}
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="progress" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="পরিচয় ও যাত্রা"
+    en="Identity & journey"
+    note="রিং + স্কিল-টাইটেল = অর্জিত পরিচয়। 'যাত্রার গল্প' টাইমলাইন স্কোরবোর্ড নয়, বেড়ে ওঠার গল্প।"
+    agents="Diagnostician · Companion"
+  >
+    <PhoneFrame caption="পরিচয়" state="identity">
+      <AppShell>
+        <TopBar slot="top" title="তোমার যাত্রা" />
+        <div class="space-y-4">
+          <Card class="space-y-3">
+            <div class="grid grid-cols-3 gap-2">
+              {outcomes.slice(0, 3).map((o) => (
+                <div class="flex flex-col items-center gap-1">
+                  <MasteryRing mastery={o.mastery} size={66} />
+                  <span class="text-center text-meta text-ink-muted">{o.bn}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card class="space-y-3">
+            <h2 class="text-label font-semibold text-ink">যাত্রার গল্প</h2>
+            <ol class="space-y-3">
+              <li class="flex gap-3">
+                <span class="mt-0.5 text-mastery" aria-hidden="true">●</span>
+                <div>
+                  <p class="text-label text-ink">স্থিতি ও গতিতে <span class="font-semibold">মাস্টার</span> হয়েছ</p>
+                  <p class="text-meta text-ink-faint">৩ দিন আগে · <TransferBadge label /></p>
+                </div>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-0.5 text-info" aria-hidden="true">●</span>
+                <div>
+                  <p class="text-label text-ink">ভর-ওজনের ভুল ধারণা ঠিক করেছ</p>
+                  <p class="text-meta text-ink-faint">৫ দিন আগে</p>
+                </div>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-0.5 text-ink-faint" aria-hidden="true">●</span>
+                <div>
+                  <p class="text-label text-ink">গতি অধ্যায় শুরু করেছ</p>
+                  <p class="text-meta text-ink-faint">৮ দিন আগে</p>
+                </div>
+              </li>
+            </ol>
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="progress" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="ভুল ধারণার খাতা"
+    en="Misconception log"
+    note="ঠিক-হওয়া বনাম এখনো-সক্রিয় ভুল ধারণা — স্বচ্ছভাবে। এগুলো লজ্জা নয়, শেখার মানচিত্র।"
+    agents="Diagnostician"
+  >
+    <PhoneFrame caption="ভুল ধারণা" state="misconceptions">
+      <AppShell>
+        <TopBar slot="top" title="ভুল ধারণার খাতা" back />
+        <div class="space-y-2.5">
+          {misconceptions.map((m) => (
+            <Card class="flex items-start gap-3">
+              <span class={`mt-0.5 text-[18px] ${m.repaired ? 'text-mastery' : 'text-struggle'}`} aria-hidden="true">{m.repaired ? '🔧' : '👀'}</span>
+              <div class="flex-1">
+                <p class="text-body text-ink">{m.bn}</p>
+                <p class="mt-0.5 text-meta text-ink-faint">
+                  {m.repaired ? 'ঠিক হয়েছে' : `${bnNum(m.freq)} বার দেখা গেছে — নজরে আছে`}
+                </p>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <BottomNav slot="bottom" active="progress" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="প্রথম সপ্তাহ"
+    en="Empty / early"
+    note="ডেটা কম থাকলে খালি দশা উৎসাহব্যঞ্জক — 'এখনো শুরু', শূন্যতা নয়।"
+    agents="Companion"
+  >
+    <PhoneFrame caption="অগ্রগতি — শুরুর দিকে" state="empty">
+      <AppShell>
+        <TopBar slot="top" title="তোমার অগ্রগতি" />
+        <div class="flex h-full flex-col items-center justify-center px-2 text-center">
+          <div class="text-[44px]" aria-hidden="true">🌱</div>
+          <h2 class="mt-3 text-h2 font-semibold text-ink">যাত্রা সবে শুরু</h2>
+          <p class="mt-1 text-body leading-relaxed text-ink-muted">কয়েকটা ক্লাস শেষ করলেই এখানে তোমার বেড়ে ওঠার ছবি ফুটে উঠবে।</p>
+          <div class="mt-4"><SkillTitleBadge mastery={0.1} /></div>
+          <div class="mt-6 w-full"><PrimaryCTA href={url('/c/chooser')}>একটা ক্লাস করি</PrimaryCTA></div>
+        </div>
+        <BottomNav slot="bottom" active="progress" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

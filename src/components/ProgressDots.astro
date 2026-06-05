@@ -1,0 +1,18 @@
+---
+// Generic step indicator (onboarding wizard, placement 1/10, phase strip base). Foundation §5.
+import { bnNum } from '@lib/mastery';
+interface Props {
+  total: number;
+  current: number; // 0-based
+  showCount?: boolean;
+}
+const { total, current, showCount = false } = Astro.props;
+---
+<div class="flex items-center gap-2">
+  <div class="flex items-center gap-1.5" role="progressbar" aria-valuenow={current + 1} aria-valuemax={total}>
+    {Array.from({ length: total }).map((_, i) => (
+      <span class={`h-1.5 rounded-full transition-all ${i === current ? 'w-5 bg-primary' : i < current ? 'w-1.5 bg-primary/40' : 'w-1.5 bg-border'}`}></span>
+    ))}
+  </div>
+  {showCount && <span class="nums text-meta text-ink-muted">{bnNum(current + 1)} / {bnNum(total)}</span>}
+</div>

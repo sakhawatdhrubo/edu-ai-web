@@ -1,0 +1,107 @@
+---
+// Chapter 6 — Modalities (takeover). "অন্যভাবে বুঝতে চাও?" — 5 ways to receive the same concept.
+// Switching preserves ALL session state; preference is a default, never a lock. Agent: Tutor.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import PhaseStrip from '@components/PhaseStrip.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import ModalitySwitcher from '@components/ModalitySwitcher.astro';
+import Card from '@components/Card.astro';
+import Katex from '@components/Katex.astro';
+import Stepper from '@components/Stepper.astro';
+import ReportButton from '@components/ReportButton.astro';
+import Toast from '@components/Toast.astro';
+---
+<CatalogLayout slug="modalities">
+  <ScreenSection
+    n={1}
+    title="বোঝার ধরন বদলানো"
+    en="Switch how it's taught"
+    note="৫টি টাইল: ভিডিও / লেখা / উদাহরণ / প্রশ্ন করে / অ্যানিমেশন। বদলালেও অগ্রগতি অটুট — আরাম, 'লার্নিং স্টাইল' নয়।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="অন্যভাবে বোঝাও" state="sheet open">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" actionLabel="অন্যভাবে বোঝাও" />
+        <PhaseStrip slot="top" current={3} />
+        <div class="space-y-4 opacity-50">
+          <Card class="h-24"></Card>
+          <Card class="h-16"></Card>
+        </div>
+        <ModalitySwitcher current="video" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="লেখা হিসেবে"
+    en="As text"
+    note="একই ধারণা পড়ার মতো করে — KaTeX সহ। প্রতিটি কন্টেন্ট অ্যাসেটে 'কিছু ভুল?' রিপোর্ট থাকে।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="লেখা হিসেবে" state="text">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} />
+        <div class="space-y-4">
+          <Card class="space-y-3 text-body leading-relaxed text-ink">
+            <p>ত্বরণ হলো একক সময়ে বেগের পরিবর্তন। বল যত বেশি, ত্বরণ তত বেশি; ভর যত বেশি, ত্বরণ তত কম।</p>
+            <Katex tex="a = \frac{F}{m}" block />
+            <p>তাই একই বল ভারী বস্তুকে কম ত্বরণ দেয় — ঠেলাগাড়ি বনাম ট্রাক ভাবো।</p>
+            <ReportButton />
+          </Card>
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">বুঝেছি</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="উদাহরণ হিসেবে"
+    en="As a worked example"
+    note="যে ছাত্র সংখ্যায় ভালো বোঝে তার জন্য ধাপে-ধাপে হিসাব। ফেডিং — কিছু ধাপ ছাত্র নিজে ভরে।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="উদাহরণ হিসেবে" state="example">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} />
+        <div class="space-y-4">
+          <Stepper
+            revealed={2}
+            steps={[
+              { text: 'একটি ট্রাক: F = ৯০০০ N, m = ৩০০০ kg', tex: 'a = \\tfrac{F}{m}' },
+              { text: 'বসাই:', tex: 'a = \\tfrac{9000}{3000} = 3\\,\\text{m/s}^2' },
+              { text: 'এবার ঠেলাগাড়ি (m = ৫০ kg) নিয়ে তুমি করো:' },
+            ]}
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">পরের ধাপ</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+
+    <PhoneFrame caption="সুইচ পরামর্শ (টোস্ট)" state="suggestion">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} />
+        <div class="relative space-y-4">
+          <Card class="h-28"></Card>
+          <div class="pt-2"><Toast icon="💡">দুবার আটকে গেলে — ভিডিওতে দেখবে একবার?</Toast></div>
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">চালিয়ে যাই</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

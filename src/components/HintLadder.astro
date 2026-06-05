@@ -1,0 +1,60 @@
+---
+// Gated reveal: nudge → hint → worked-example → solution. Hint button visible-but-DISABLED during
+// the 20s / 10-char productive-struggle gate with a visible countdown/counter. Each rung honestly
+// lowers how much this question can grow mastery. Foundation §5; backlog "hint ladder 4 levels".
+import { bnNum } from '@lib/mastery';
+interface Props {
+  // 'locked' = struggle gate active; 'ready' = unlocked, no rung taken; 'climbing' = rungs revealed
+  state?: 'locked' | 'ready' | 'climbing';
+  countdown?: number; // seconds left on gate
+  charCount?: number; // chars typed toward the 10-char unlock
+  revealed?: number; // rungs shown (1..4)
+}
+const { state = 'locked', countdown = 14, charCount = 3, revealed = 1 } = Astro.props;
+const RUNGS = [
+  { label: 'ইশারা', cost: 'সামান্য কম', body: 'একক মিলিয়ে দেখো — ত্বরণের একক কী হওয়া উচিত?' },
+  { label: 'হিন্ট', cost: 'একটু কম', body: 'F = ma সূত্রে m ভাগ করতে হবে, গুণ নয়।' },
+  { label: 'ধাপে-ধাপে উদাহরণ', cost: 'আরো কম', body: 'a = F/m = ১০ / ২ = ৫ — এবার তোমার সংখ্যায় বসাও।' },
+  { label: 'পূর্ণ সমাধান', cost: 'ন্যূনতম', body: 'a = F/m = ১২ / ৪ = ৩ m/s²।' },
+];
+---
+<div class="space-y-2">
+  {state === 'locked' && (
+    <div class="flex flex-col gap-1">
+      <button
+        type="button"
+        disabled
+        class="flex h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-pill bg-surface-sunken px-4 text-label font-medium text-ink-faint"
+      >
+        <span aria-hidden="true">🔒</span> সাহায্য <span class="nums">{bnNum(countdown)}s</span>
+      </button>
+      <p class="text-meta text-ink-muted">চেষ্টা করো — তারপর সাহায্য নিতে পারবে। ({bnNum(charCount)} / ১০ অক্ষর)</p>
+    </div>
+  )}
+
+  {state === 'ready' && (
+    <button
+      type="button"
+      class="flex h-11 w-full items-center justify-center gap-2 rounded-pill border border-primary bg-primary-soft px-4 text-label font-semibold text-primary"
+    >
+      <span aria-hidden="true">🔓</span> একটু সাহায্য নাও
+    </button>
+  )}
+
+  {state === 'climbing' && (
+    <div class="space-y-2">
+      {RUNGS.slice(0, revealed).map((r, i) => (
+        <div class="rounded-card border border-border bg-surface-sunken p-3">
+          <div class="mb-1 flex items-center justify-between">
+            <span class="text-label font-semibold text-ink">{bnNum(i + 1)}. {r.label}</span>
+            <span class="text-meta text-ink-faint">অগ্রগতি {r.cost}</span>
+          </div>
+          <p class="text-label leading-relaxed text-ink">{r.body}</p>
+        </div>
+      ))}
+      {revealed < RUNGS.length && (
+        <button type="button" class="text-label font-medium text-primary">আরো একটু সাহায্য →</button>
+      )}
+    </div>
+  )}
+</div>

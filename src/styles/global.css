@@ -1,0 +1,171 @@
+/* KaTeX stylesheet — math is KaTeX only, never ASCII (Foundation §3).
+   Must precede @tailwind: CSS requires @import before all other statements. */
+@import 'katex/dist/katex.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Semantic color tokens — Design Foundation §2
+   Light is default; .dark overrides. Calm study palette:
+   warm paper surface, teal-indigo primary, emerald = mastery only,
+   amber = struggle (never red), rose = true error only.
+   ============================================================ */
+:root {
+  --color-primary: #2f6f75;
+  --color-primary-ink: #ffffff;
+  --color-primary-soft: #e3f1f2;
+
+  --color-mastery: #2e9e6b;
+  --color-mastery-soft: #e2f4ec;
+
+  --color-struggle: #c9821f;
+  --color-struggle-soft: #fbefd9;
+
+  --color-info: #3a6ea5;
+  --color-info-soft: #e6eef7;
+
+  --color-danger: #b5524c;
+
+  --color-surface: #faf8f4;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f1ece4;
+
+  --color-ink: #1f2429;
+  --color-ink-muted: #5c6168;
+  --color-ink-faint: #9097a0;
+
+  --color-border: #e6e0d6;
+  --color-focus-ring: #2f6f75;
+
+  --font-bn: 'Noto Sans Bengali', 'SolaimanLipi', 'Hind Siliguri', sans-serif;
+  --font-en: 'Noto Sans Bengali', 'Inter', system-ui, sans-serif;
+  --font-num: 'Inter', 'Noto Sans Bengali', sans-serif;
+}
+
+.dark {
+  --color-primary: #5fbfc7;
+  --color-primary-ink: #06262a;
+  --color-primary-soft: #173b3f;
+
+  --color-mastery: #54c892;
+  --color-mastery-soft: #143a2b;
+
+  --color-struggle: #e8a84b;
+  --color-struggle-soft: #3d2e12;
+
+  --color-info: #7aa9d9;
+  --color-info-soft: #16293d;
+
+  --color-danger: #e08a84;
+
+  --color-surface: #11151a;
+  --color-surface-raised: #1a2027;
+  --color-surface-sunken: #0c1014;
+
+  --color-ink: #eceff2;
+  --color-ink-muted: #9ba3ac;
+  --color-ink-faint: #5e6770;
+
+  --color-border: #2a323b;
+  --color-focus-ring: #5fbfc7;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: 'tnum' 0;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-bn);
+  /* Line-height is the #1 Bangla gotcha: relaxed so matras never clip. */
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Bangla body text must never clip diacritics. */
+.bn,
+p,
+li {
+  line-height: 1.7;
+}
+
+/* Tabular numerals for timers, %, counts — no jitter. */
+.nums {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+}
+
+/* a11y: focus ring is never removed (Foundation §2). */
+:where(a, button, [role='button'], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Honor reduced-motion everywhere (celebrations, transitions). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Small utilities used across the kit
+   ============================================================ */
+
+/* Skeleton shimmer (in-card LLM loading; never blanks the screen). */
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--color-surface-sunken) 30%,
+    var(--color-border) 50%,
+    var(--color-surface-sunken) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Brief, calm celebration (CSS-only, measured — never confetti). */
+@keyframes calm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.calm-rise {
+  animation: calm-rise 0.45s ease-out both;
+}
+
+/* KaTeX must not override Bangla runs around it. */
+.katex {
+  font-size: 1.05em;
+}
+
+/* Hide scrollbar on the device content region but keep scrollability. */
+.scroll-area {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}

@@ -1,0 +1,163 @@
+---
+// Chapter 13 — Cross-Cutting (hub, tab 4 "আমি" → settings). System behaviours that appear everywhere:
+// offline, in-card loading, graceful error/fallback, settings, dark mode, and the report sheet.
+// These are the trust + resilience guarantees. Agents: all (system layer).
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomNav from '@components/BottomNav.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import Banner from '@components/Banner.astro';
+import Card from '@components/Card.astro';
+import Skeleton from '@components/Skeleton.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import SegmentedControl from '@components/SegmentedControl.astro';
+import Sheet from '@components/Sheet.astro';
+import Toast from '@components/Toast.astro';
+---
+<CatalogLayout slug="cross-cutting">
+  <ScreenSection
+    n={1}
+    title="অফলাইন"
+    en="Offline"
+    note="নেট গেলে অ্যাপ মরে না — ক্যাশ করা কন্টেন্ট চলে, ব্যানার শান্তভাবে জানায়। বাংলাদেশের বাস্তবতা মাথায়।"
+    agents="System"
+  >
+    <PhoneFrame caption="অফলাইন" state="offline">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <div class="space-y-4">
+          <Banner variant="info" icon="📡">এখন অফলাইন — যা আগে নামানো আছে তা দিয়ে পড়া চালিয়ে যাও, নেট ফিরলে অগ্রগতি নিজেই সিঙ্ক হবে।</Banner>
+          <Card class="space-y-2 text-body leading-relaxed text-ink">
+            <p>এই ক্লাসটা আগে থেকে নামানো — নিশ্চিন্তে এগোও।</p>
+            <p class="text-meta text-ink-faint">নতুন প্রশ্ন তৈরির জন্য নেট লাগবে; ততক্ষণ রিভিশন করা যায়।</p>
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="home" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="লোডিং"
+    en="In-card loading"
+    note="LLM ডাকার সময় স্ক্রিন ব্ল্যাঙ্ক হয় না — কার্ডের ভেতর স্কেলিটন; টপ-বার ও অ্যাকশন-বার জীবন্ত। ৮s → বাংলা ফলব্যাক।"
+    agents="System"
+  >
+    <PhoneFrame caption="লোডিং" state="loading">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <div class="space-y-4">
+          <Card class="space-y-3">
+            <span class="text-label font-semibold text-ink-muted">পরের প্রশ্ন তৈরি হচ্ছে…</span>
+            <Skeleton lines={4} />
+          </Card>
+        </div>
+        <BottomActionBar slot="bottom">
+          <SecondaryButton class="w-full">থামাও</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="ত্রুটি ও ফলব্যাক"
+    en="Error / fallback"
+    note="কিছু ভেঙে গেলে দোষারোপ নয় — শান্ত বাংলা বার্তা ও 'আবার চেষ্টা'। সেশন-স্টেট হারায় না।"
+    agents="System"
+  >
+    <PhoneFrame caption="ত্রুটি" state="error">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <div class="flex h-full flex-col items-center justify-center px-2 text-center">
+          <div class="text-[40px]" aria-hidden="true">🛠️</div>
+          <h2 class="mt-3 text-h2 font-semibold text-ink">একটু সমস্যা হলো</h2>
+          <p class="mt-1 text-body leading-relaxed text-ink-muted">প্রশ্নটা আনতে পারলাম না — তোমার দোষ নয়। আবার চেষ্টা করি?</p>
+          <div class="mt-6 w-full space-y-3">
+            <PrimaryCTA href="#">আবার চেষ্টা করো</PrimaryCTA>
+            <SecondaryButton variant="text" class="w-full">পরে দেখব</SecondaryButton>
+          </div>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="সেটিংস"
+    en="Settings"
+    note="ভাষা / টোন / গতি / থিম — অনবোর্ডিংয়ের পছন্দ যেকোনো সময় বদলানো যায়। নিয়ন্ত্রণ ছাত্রের হাতে।"
+    agents="System"
+  >
+    <PhoneFrame caption="সেটিংস" state="settings">
+      <AppShell>
+        <TopBar slot="top" title="সেটিংস" back />
+        <div class="space-y-4">
+          <Card class="space-y-4">
+            <SegmentedControl label="ভাষা" chosen="bangla" options={[{ key: 'bangla', bn: 'বাংলা' }, { key: 'mixed', bn: 'মিশ্র' }, { key: 'english', bn: 'English' }]} />
+            <SegmentedControl label="টোন" chosen="friendly" options={[{ key: 'formal', bn: 'গোছানো' }, { key: 'friendly', bn: 'বন্ধুর মতো' }, { key: 'playful', bn: 'মজার' }]} />
+            <SegmentedControl label="গতি" chosen="normal" options={[{ key: 'slow', bn: 'ধীর' }, { key: 'normal', bn: 'স্বাভাবিক' }, { key: 'fast', bn: 'দ্রুত' }]} />
+          </Card>
+          <Card class="flex items-center justify-between">
+            <span class="text-body text-ink">ডার্ক মোড</span>
+            <button data-theme-toggle class="grid h-9 w-9 place-items-center rounded-full border border-border text-ink-muted hover:bg-surface-sunken" aria-label="থিম বদলাও">☾</button>
+          </Card>
+        </div>
+        <BottomNav slot="bottom" active="me" />
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={5}
+    title="ডার্ক মোড"
+    en="Dark theme"
+    note="রাতে পড়ার জন্য — একই টোকেন, কেবল উল্টানো সারফেস/ইঙ্ক। উপরের ☾ বোতামে গোটা ক্যাটালগ ডার্ক হয়।"
+    agents="System"
+  >
+    <PhoneFrame caption="ডার্ক (উদাহরণ কার্ড)" state="dark">
+      <div class="dark h-full">
+        <AppShell>
+          <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+          <div class="space-y-4">
+            <Banner variant="mastery" icon="✨">রাতের জন্য নরম, কম ঝলমলে — চোখে আরাম।</Banner>
+            <Card class="space-y-2 text-body leading-relaxed text-ink">
+              <p>একই রঙ-টোকেন, উল্টানো সারফেস। পড়ার ছন্দ একই থাকে।</p>
+            </Card>
+          </div>
+        </AppShell>
+      </div>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={6}
+    title="রিপোর্ট শিট"
+    en="Report sheet"
+    note="প্রতিটি টিউটর-বাক্য ও কন্টেন্টে 'কিছু ভুল?' — ট্যাপ করলে এই শিট। ছাত্রের আস্থা = সংশোধনের পথ খোলা রাখা।"
+    agents="System"
+  >
+    <PhoneFrame caption="রিপোর্ট" state="report sheet">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <div class="space-y-4 opacity-50">
+          <Card class="h-24"></Card>
+          <div class="pt-1"><Toast icon="⚐">এই উত্তরে কিছু ভুল মনে হচ্ছে?</Toast></div>
+        </div>
+        <Sheet title="কী সমস্যা হয়েছে?">
+          <div class="space-y-2 pb-1">
+            {['উত্তরটা ভুল মনে হচ্ছে', 'বোঝা যাচ্ছে না', 'বাংলা ঠিক নেই', 'প্রশ্নটা অপ্রাসঙ্গিক'].map((r) => (
+              <button class="flex min-h-[44px] w-full items-center rounded-card border border-border bg-surface-raised px-3.5 text-left text-body text-ink hover:bg-surface-sunken">{r}</button>
+            ))}
+            <PrimaryCTA href="#">পাঠাও</PrimaryCTA>
+          </div>
+        </Sheet>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

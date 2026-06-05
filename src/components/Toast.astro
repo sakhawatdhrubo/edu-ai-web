@@ -1,0 +1,14 @@
+---
+// Transient one-line notice (modality-switch suggestion, autosave). Auto-dismiss in real app.
+interface Props {
+  icon?: string;
+}
+const { icon = '💬' } = Astro.props;
+---
+<div
+  class="mx-auto flex w-fit max-w-full items-center gap-2 rounded-pill bg-ink px-3.5 py-2 text-label text-surface shadow-card"
+  role="status"
+>
+  <span aria-hidden="true">{icon}</span>
+  <span><slot /></span>
+</div>

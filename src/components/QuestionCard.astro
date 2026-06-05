@@ -1,0 +1,89 @@
+---
+// Question stem (text-question) + answer input + ConfidenceSlider (always) + WhyChip. Foundation §5.
+import Card from './Card.astro';
+import Katex from './Katex.astro';
+import WhyChip from './WhyChip.astro';
+import ReportButton from './ReportButton.astro';
+import ConfidenceSlider from './ConfidenceSlider.astro';
+interface Props {
+  stem: string;
+  mathTex?: string;
+  type?: 'mcq' | 'numeric' | 'short' | 'voice';
+  options?: string[]; // for mcq (Bangla labels)
+  chosen?: number; // selected mcq index
+  confidence?: number;
+  why?: string;
+  contextTag?: string; // real-world context tag (variability of practice)
+}
+const {
+  stem,
+  mathTex,
+  type = 'mcq',
+  options = [],
+  chosen,
+  confidence,
+  why,
+  contextTag,
+} = Astro.props;
+const optLabels = ['ক', 'খ', 'গ', 'ঘ'];
+---
+<Card class="space-y-3.5">
+  <div class="flex items-center justify-between">
+    <WhyChip reason={why ?? 'তোমার এখনকার দুর্বল জায়গা ধরে এই প্রশ্ন বেছেছি।'} label="কেন এই প্রশ্ন?" />
+    {contextTag && <span class="rounded-pill bg-surface-sunken px-2 py-0.5 text-meta text-ink-muted">{contextTag}</span>}
+  </div>
+
+  <p class="text-question text-ink">{stem}</p>
+  {mathTex && <Katex tex={mathTex} block />}
+
+  {type === 'mcq' && (
+    <div class="grid grid-cols-1 gap-2">
+      {options.map((o, i) => {
+        const on = i === chosen;
+        return (
+          <button
+            type="button"
+            class={`flex min-h-[44px] items-center gap-2.5 rounded-card border px-3 py-2.5 text-left text-body ${
+              on ? 'border-primary bg-primary-soft text-ink' : 'border-border bg-surface-raised text-ink hover:bg-surface-sunken'
+            }`}
+          >
+            <span class={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-label font-semibold ${on ? 'bg-primary text-primary-ink' : 'bg-surface-sunken text-ink-muted'}`}>{optLabels[i]}</span>
+            <span>{o}</span>
+          </button>
+        );
+      })}
+    </div>
+  )}
+
+  {type === 'numeric' && (
+    <div class="flex items-center gap-2">
+      <input
+        type="text"
+        inputmode="decimal"
+        placeholder="উত্তর লেখো"
+        class="nums h-11 flex-1 rounded-card border border-border bg-surface-sunken px-3 text-body text-ink placeholder:text-ink-faint"
+      />
+      <span class="text-label text-ink-muted">m/s²</span>
+    </div>
+  )}
+
+  {type === 'short' && (
+    <textarea
+      rows="3"
+      placeholder="নিজের ভাষায় লেখো…"
+      class="w-full rounded-card border border-border bg-surface-sunken p-3 text-body leading-relaxed text-ink placeholder:text-ink-faint"
+    ></textarea>
+  )}
+
+  {type === 'voice' && (
+    <div class="flex items-center gap-3 rounded-card border border-border bg-surface-sunken p-3">
+      <button class="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-ink" aria-label="বলে উত্তর দাও">🎤</button>
+      <span class="text-label text-ink-muted">চেপে ধরে বাংলায় বলো</span>
+    </div>
+  )}
+
+  <div class="flex items-center justify-between border-t border-border pt-3">
+    <ConfidenceSlider chosen={confidence} />
+    <ReportButton />
+  </div>
+</Card>

@@ -1,0 +1,93 @@
+---
+// Chapter 7 — Socratic Chat (takeover). The tutor leads with questions until the student reaches
+// the answer themselves. Scaffolds down when stuck. Every tutor turn is reportable. Agent: Tutor.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import PhaseStrip from '@components/PhaseStrip.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import ChatBubble from '@components/ChatBubble.astro';
+import WhyChip from '@components/WhyChip.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+---
+<CatalogLayout slug="socratic">
+  <ScreenSection
+    n={1}
+    title="প্রশ্নে প্রশ্নে এগোনো"
+    en="Socratic thread"
+    note="টিউটর উত্তর বলে না — প্রশ্ন করে ছাত্রকে ভাবায়। ইনপুট বার নিচে; চাইলে বাংলায় টাইপ বা বলা যায়।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="আলাপ" state="default">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ — আলাপ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} label="প্রশ্ন করে" />
+        <div class="space-y-3">
+          <ChatBubble from="tutor" report>গাড়িটা যখন গতি বাড়াচ্ছে, তখন কী বদলাচ্ছে — অবস্থান, নাকি বেগ?</ChatBubble>
+          <ChatBubble from="student">বেগ বদলাচ্ছে</ChatBubble>
+          <ChatBubble from="tutor" report>ঠিক! তাহলে বেগের এই বদলকে আমরা কী নামে ডাকি বলো তো?</ChatBubble>
+          <ChatBubble from="student">ত্বরণ?</ChatBubble>
+          <ChatBubble from="tutor" report>একদম। এবার বলো — বল বাড়ালে এই ত্বরণের কী হবে?</ChatBubble>
+        </div>
+        <BottomActionBar slot="bottom">
+          <div class="flex h-11 flex-1 items-center rounded-pill border border-border bg-surface-sunken px-4 text-label text-ink-faint">বাংলায় লেখো…</div>
+          <button class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary text-primary-ink" aria-label="বলে উত্তর দাও">🎤</button>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="আটকে গেলে স্ক্যাফোল্ড"
+    en="Stuck → smaller step"
+    note="ছাত্র আটকালে টিউটর ছোট, সহজ প্রশ্নে নামে — হাল ছাড়ে না, উত্তরও বলে দেয় না। কেন এই প্রশ্ন তা খোলা।"
+    agents="Tutor · Diagnostician"
+  >
+    <PhoneFrame caption="স্ক্যাফোল্ডিং" state="stuck">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ — আলাপ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} label="প্রশ্ন করে" />
+        <div class="space-y-3">
+          <ChatBubble from="student">বুঝতে পারছি না…</ChatBubble>
+          <ChatBubble from="tutor" report>সমস্যা নেই, ছোট করে ভাবি। ধরো একই বল একটা সাইকেল আর একটা বাসে দিলাম — কোনটা দ্রুত গতি পাবে?</ChatBubble>
+          <div class="pl-10"><WhyChip reason="ভর আর ত্বরণের সম্পর্ক বাস্তব উদাহরণে আনলে ধরা সহজ হয়।" label="কেন এই প্রশ্ন?" /></div>
+          <ChatBubble from="student">সাইকেল</ChatBubble>
+          <ChatBubble from="tutor" report>চমৎকার! তাহলে হালকা মানে বেশি ত্বরণ — সূত্রটা এবার নিজেই বুঝে ফেলবে।</ChatBubble>
+        </div>
+        <BottomActionBar slot="bottom">
+          <div class="flex h-11 flex-1 items-center rounded-pill border border-border bg-surface-sunken px-4 text-label text-ink-faint">বাংলায় লেখো…</div>
+          <button class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary text-primary-ink" aria-label="বলে উত্তর দাও">🎤</button>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="নিজেই পৌঁছানো"
+    en="Arrival"
+    note="ছাত্র নিজে উত্তরে পৌঁছালে কৃতিত্ব তারই — এটিই সক্রেটিক পদ্ধতির পুরো লক্ষ্য। উদযাপন শান্ত।"
+    agents="Tutor · Companion"
+  >
+    <PhoneFrame caption="পৌঁছে গেছ" state="arrival">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ — আলাপ" back action="⚙" />
+        <PhaseStrip slot="top" current={3} label="প্রশ্ন করে" />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-3">
+            <ChatBubble from="student">তাহলে a = F/m — ভর বাড়লে ত্বরণ কমে!</ChatBubble>
+            <CompanionBanner kind="affirm">
+              এটা তুমি নিজে বের করেছ, আমি শুধু পথ দেখিয়েছি। এভাবেই শেখা সবচেয়ে গভীর হয়।
+            </CompanionBanner>
+          </div>
+          <PrimaryCTA href={url('/c/core-loop')}>একটা প্রশ্নে যাচাই করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

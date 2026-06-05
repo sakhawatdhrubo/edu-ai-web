@@ -1,0 +1,32 @@
+---
+// 56px top bar: optional back, screen title (one h1 per screen), optional top-right secondary action.
+interface Props {
+  title?: string;
+  back?: boolean;
+  /** right-side glyph, e.g. '⚙' for ModalitySwitcher, '☾' theme */
+  action?: string;
+  actionLabel?: string;
+  timer?: string;
+}
+const { title, back = false, action, actionLabel, timer } = Astro.props;
+---
+<header
+  class="flex h-topbar shrink-0 items-center gap-2 border-b border-border bg-surface-raised px-3"
+>
+  {back && (
+    <button aria-label="ফিরে যাও" class="grid h-11 w-11 place-items-center rounded-full text-ink-muted hover:bg-surface-sunken">
+      ←
+    </button>
+  )}
+  {title && <h1 class="flex-1 truncate text-h2 font-semibold text-ink">{title}</h1>}
+  {!title && <span class="flex-1"></span>}
+  {timer && <span class="nums mr-1 text-label text-ink-muted">⏱ {timer}</span>}
+  {action && (
+    <button
+      aria-label={actionLabel ?? 'মেনু'}
+      class="grid h-11 w-11 place-items-center rounded-full text-ink-muted hover:bg-surface-sunken"
+    >
+      {action}
+    </button>
+  )}
+</header>

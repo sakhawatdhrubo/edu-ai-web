@@ -1,0 +1,35 @@
+---
+// 4-tab persistent hub navigation (hub screens only; hidden in takeover flows). Foundation §6.
+// active: 'home' | 'progress' | 'revision' | 'me'
+import { url } from '@lib/nav';
+interface Props {
+  active?: 'home' | 'progress' | 'revision' | 'me';
+}
+const { active = 'home' } = Astro.props;
+const tabs = [
+  { key: 'home', bn: 'পড়া', icon: '📖', href: url('/c/dashboard') },
+  { key: 'progress', bn: 'অগ্রগতি', icon: '📈', href: url('/c/progress') },
+  { key: 'revision', bn: 'রিভিশন', icon: '🔁', href: url('/c/mock-exam') },
+  { key: 'me', bn: 'আমি', icon: '🙂', href: url('/c/cross-cutting') },
+];
+---
+<nav
+  class="flex h-bottomnav shrink-0 items-stretch border-t border-border bg-surface-raised pb-[env(safe-area-inset-bottom)]"
+  aria-label="প্রধান মেনু"
+>
+  {tabs.map((t) => {
+    const on = t.key === active;
+    return (
+      <a
+        href={t.href}
+        aria-current={on ? 'page' : undefined}
+        class={`flex flex-1 flex-col items-center justify-center gap-0.5 text-label ${
+          on ? 'font-bold text-primary' : 'text-ink-muted'
+        }`}
+      >
+        <span class="text-[18px] leading-none" aria-hidden="true">{t.icon}</span>
+        <span>{t.bn}</span>
+      </a>
+    );
+  })}
+</nav>

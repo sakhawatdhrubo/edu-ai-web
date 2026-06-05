@@ -1,0 +1,192 @@
+---
+// Chapter 1 — Entry & Onboarding (takeover). Light-touch: account is intentionally minimized;
+// focus is language/tone/goal so the tutor can personalize from message one. Agent: Companion.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import ProgressDots from '@components/ProgressDots.astro';
+import SegmentedControl from '@components/SegmentedControl.astro';
+import Picker from '@components/Picker.astro';
+import PhoneInput from '@components/PhoneInput.astro';
+import OTPInput from '@components/OTPInput.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+import Card from '@components/Card.astro';
+import SkillTitleBadge from '@components/SkillTitleBadge.astro';
+---
+<CatalogLayout slug="entry">
+  <ScreenSection
+    n={1}
+    title="স্বাগতম"
+    en="Welcome / Splash"
+    note="প্রথম ছোঁয়া উষ্ণ, চাপহীন। অ্যাকাউন্ট পরে — আগে শেখার আমন্ত্রণ। লগইন সমান গুরুত্বে, লুকানো নয়।"
+    agents="Companion"
+  >
+    <PhoneFrame caption="স্বাগতম" state="default">
+      <AppShell>
+        <div class="flex h-full flex-col items-center justify-center px-6 text-center">
+          <div class="grid h-20 w-20 place-items-center rounded-sheet bg-primary-soft text-[40px]" aria-hidden="true">🦉</div>
+          <h1 class="mt-5 text-display font-bold text-ink">edu-ai</h1>
+          <p class="mt-2 text-body leading-relaxed text-ink-muted">তোমার নিজের গতিতে, নিজের ভাষায় পদার্থবিজ্ঞান শেখো।</p>
+          <div class="mt-8 w-full space-y-3">
+            <PrimaryCTA href="#">শুরু করি</PrimaryCTA>
+            <SecondaryButton variant="text" class="w-full">আগে থেকে অ্যাকাউন্ট আছে?</SecondaryButton>
+          </div>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="ভাষা ও কণ্ঠস্বর"
+    en="Language & Tone"
+    note="ভাষা ও টোন আগে — কারণ এতেই পরের সব বার্তার সুর ঠিক হয়। কখনো Banglish নয়।"
+    agents="Companion · Planner"
+  >
+    <PhoneFrame caption="ভাষা/টোন বাছাই" state="default">
+      <AppShell>
+        <div slot="top" class="flex h-topbar items-center px-4">
+          <ProgressDots total={4} current={1} showCount />
+        </div>
+        <div class="space-y-6">
+          <div>
+            <h1 class="text-h1 font-bold text-ink">কীভাবে বোঝালে আরাম লাগে?</h1>
+            <p class="mt-1 text-label text-ink-muted">যেকোনো সময় বদলাতে পারবে।</p>
+          </div>
+          <SegmentedControl
+            label="ভাষা"
+            chosen="bangla"
+            options={[
+              { key: 'bangla', bn: 'বাংলা' },
+              { key: 'mixed', bn: 'মিশ্র' },
+              { key: 'english', bn: 'English' },
+            ]}
+          />
+          <Picker
+            label="টোন"
+            chosen="friendly"
+            setLater={false}
+            options={[
+              { key: 'formal', bn: 'গুছিয়ে, ভদ্রভাবে', icon: '🎩' },
+              { key: 'friendly', bn: 'বন্ধুর মতো সহজ', icon: '🙂' },
+              { key: 'playful', bn: 'মজা করে', icon: '😄' },
+            ]}
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">পরের ধাপ</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="লক্ষ্য"
+    en="Goal"
+    note="লক্ষ্য জানলে Planner প্রতিদিনের পরামর্শ সাজাতে পারে। 'পরে ঠিক করব' সবসময় খোলা।"
+    agents="Planner"
+  >
+    <PhoneFrame caption="লক্ষ্য বাছাই" state="default">
+      <AppShell>
+        <div slot="top" class="flex h-topbar items-center px-4">
+          <ProgressDots total={4} current={2} showCount />
+        </div>
+        <div class="space-y-6">
+          <h1 class="text-h1 font-bold text-ink">তোমার এখনকার লক্ষ্য কী?</h1>
+          <Picker
+            chosen="ssc"
+            options={[
+              { key: 'ssc', bn: 'SSC-তে ভালো করা', icon: '🎓' },
+              { key: 'admission', bn: 'ভর্তি পরীক্ষার প্রস্তুতি', icon: '🏛️' },
+              { key: 'understand', bn: 'শুধু ভালো করে বুঝতে চাই', icon: '💡' },
+            ]}
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">পরের ধাপ</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="অ্যাকাউন্ট (গৌণ)"
+    en="Phone / OTP — thin stub"
+    note="ইচ্ছাকৃতভাবে পাতলা। নম্বর শুধু অগ্রগতি সেভ করতে — 'পরে করব' দিয়ে এড়ানো যায়।"
+    agents="—"
+  >
+    <PhoneFrame caption="ফোন নম্বর" state="default">
+      <AppShell>
+        <div slot="top" class="flex h-topbar items-center px-4">
+          <ProgressDots total={4} current={3} showCount />
+        </div>
+        <div class="space-y-5">
+          <div>
+            <h1 class="text-h1 font-bold text-ink">অগ্রগতি সেভ রাখি?</h1>
+            <p class="mt-1 text-label leading-relaxed text-ink-muted">নম্বর দিলে পরে যেকোনো ফোনে ফিরে এসে একই জায়গা থেকে শুরু করতে পারবে।</p>
+          </div>
+          <PhoneInput />
+          <SecondaryButton variant="text" class="w-full">পরে করব, এখন শিখি →</SecondaryButton>
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">OTP পাঠাও</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+
+    <PhoneFrame caption="OTP যাচাই" state="OTP">
+      <AppShell>
+        <div slot="top" class="flex h-topbar items-center px-4">
+          <ProgressDots total={4} current={3} showCount />
+        </div>
+        <div class="space-y-6 pt-4 text-center">
+          <div>
+            <h1 class="text-h1 font-bold text-ink">কোড লিখো</h1>
+            <p class="mt-1 nums text-label text-ink-muted">+৮৮০ ১৭xx-xxxxxx নম্বরে পাঠানো হয়েছে</p>
+          </div>
+          <OTPInput length={4} filled={2} />
+          <button class="text-label font-medium text-primary">আবার পাঠাও</button>
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">যাচাই করো</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={5}
+    title="তোমার জন্য তৈরি"
+    en="Personalization Ready"
+    note="অনবোর্ডিং শেষ মুহূর্ত = উষ্ণ আশ্বাস, প্রথম ক্লাসের আমন্ত্রণ। সিদ্ধান্তগুলো প্রতিফলিত।"
+    agents="Companion · Planner"
+  >
+    <PhoneFrame caption="প্রস্তুত" state="default">
+      <AppShell>
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-5">
+            <CompanionBanner kind="affirm" report={false}>
+              দারুণ, রিফাত! বাংলায়, বন্ধুর মতো করে — তোমার জন্য সব সাজিয়ে নিলাম।
+            </CompanionBanner>
+            <Card class="space-y-3">
+              <h2 class="text-h2 font-semibold text-ink">শুরুর জায়গা</h2>
+              <div class="flex items-center justify-between">
+                <span class="text-body text-ink">গতি (Motion)</span>
+                <SkillTitleBadge mastery={0.1} size="sm" />
+              </div>
+              <p class="text-label leading-relaxed text-ink-muted">প্রথম ক্লাসটা ছোট — মাত্র ১০ মিনিট। চাপ নেই, শুধু পরিচয়।</p>
+            </Card>
+          </div>
+          <PrimaryCTA href={url('/c/dashboard')}>প্রথম ক্লাস শুরু করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

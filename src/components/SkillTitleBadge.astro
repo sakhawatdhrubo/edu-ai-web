@@ -1,0 +1,22 @@
+---
+// Bangla skill-title pill: অনুসন্ধানী → শিক্ষানবিস → অনুশীলনকারী → দক্ষ → মাস্টার. Foundation §5.
+import { tierFor, type Tier } from '@lib/mastery';
+interface Props {
+  mastery?: number;
+  tier?: Tier;
+  size?: 'sm' | 'md';
+}
+const { mastery, tier, size = 'md' } = Astro.props;
+const t = tier ?? tierFor(mastery ?? 0);
+const toneBg = {
+  faint: 'bg-surface-sunken text-ink-muted',
+  struggle: 'bg-struggle-soft text-struggle',
+  info: 'bg-info-soft text-info',
+  mastery: 'bg-mastery-soft text-mastery',
+}[t.tone];
+const pad = size === 'sm' ? 'px-2 py-0.5 text-meta' : 'px-2.5 py-1 text-label';
+---
+<span class={`inline-flex items-center gap-1 rounded-pill font-semibold ${toneBg} ${pad}`}>
+  <span aria-hidden="true">{'◆'.repeat(t.index + 1)}</span>
+  {t.title}
+</span>

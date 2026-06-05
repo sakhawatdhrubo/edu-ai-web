@@ -1,0 +1,21 @@
+---
+// Generic labelled input. Foundation §5.
+interface Props {
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  value?: string;
+  hint?: string;
+}
+const { label, placeholder, type = 'text', value, hint } = Astro.props;
+---
+<label class="block">
+  {label && <span class="mb-1.5 block text-label text-ink-muted">{label}</span>}
+  <input
+    type={type}
+    value={value}
+    placeholder={placeholder}
+    class="h-12 w-full rounded-card border border-border bg-surface-sunken px-3.5 text-body text-ink placeholder:text-ink-faint"
+  />
+  {hint && <span class="mt-1 block text-meta text-ink-faint">{hint}</span>}
+</label>

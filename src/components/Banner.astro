@@ -1,0 +1,24 @@
+---
+// Inline contextual strip (offline, streak, calibration, deficit). Non-blocking. Foundation §5.
+// Color is never the sole signal — every banner pairs tone with an icon + Bangla text.
+interface Props {
+  variant?: 'info' | 'struggle' | 'mastery';
+  icon?: string;
+  dismissible?: boolean;
+  class?: string;
+}
+const { variant = 'info', icon, dismissible = false, class: cls = '' } = Astro.props;
+const map = {
+  info: 'bg-info-soft text-info border-info/20',
+  struggle: 'bg-struggle-soft text-struggle border-struggle/20',
+  mastery: 'bg-mastery-soft text-mastery border-mastery/20',
+};
+const defaultIcon = { info: 'ℹ️', struggle: '⏳', mastery: '✨' }[variant];
+---
+<div class={`flex items-start gap-2 rounded-card border px-3 py-2.5 text-label ${map[variant]} ${cls}`} role="status">
+  <span aria-hidden="true" class="leading-relaxed">{icon ?? defaultIcon}</span>
+  <div class="flex-1 leading-relaxed"><slot /></div>
+  {dismissible && (
+    <button aria-label="বন্ধ করো" class="grid h-6 w-6 place-items-center rounded-full opacity-70 hover:opacity-100">✕</button>
+  )}
+</div>

@@ -1,0 +1,131 @@
+---
+// Chapter 2 — Placement / Calibration (takeover). Framed as "not a test": no score, no blame.
+// Difficulty adapts live. Output = a starting plan, shown as skill-titles. Agent: Examiner · Diagnostician.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import ProgressDots from '@components/ProgressDots.astro';
+import QuestionCard from '@components/QuestionCard.astro';
+import Banner from '@components/Banner.astro';
+import Card from '@components/Card.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+import MasteryBar from '@components/MasteryBar.astro';
+import { outcomes } from '@data/demo';
+---
+<CatalogLayout slug="placement">
+  <ScreenSection
+    n={1}
+    title="শুরুর আগে"
+    en="Placement Intro"
+    note="ভয় ভাঙানো প্রথম কাজ। স্পষ্টভাবে বলা: এটা পরীক্ষা নয়, নম্বর নেই, শুধু শুরুর জায়গা খোঁজা।"
+    agents="Companion"
+  >
+    <PhoneFrame caption="ইন্ট্রো" state="default">
+      <AppShell>
+        <TopBar slot="top" title="শুরুর আগে" />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <Banner variant="info" icon="🌱">
+              এটা কোনো পরীক্ষা নয় — নম্বর নেই, পাশ-ফেল নেই। শুধু দেখি কোথা থেকে শুরু করলে তোমার জন্য সহজ হয়।
+            </Banner>
+            <Card class="space-y-2">
+              <p class="text-body leading-relaxed text-ink">৮–১০টা ছোট প্রশ্ন। না পারলে নিশ্চিন্তে <span class="font-semibold">"জানি না"</span> চাপো — সেটাও আমাকে সাহায্য করে।</p>
+              <p class="text-label text-ink-muted">সময় লাগবে আনুমানিক ৫ মিনিট।</p>
+            </Card>
+          </div>
+          <PrimaryCTA href="#">চলো শুরু করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="শুরুর যাচাই প্রশ্ন"
+    en="First Check question"
+    note="'জানি না' স্কিপ সমান প্রকট — অনুমান করতে চাপ নেই। আত্মবিশ্বাস স্লাইডার এখানেও ডেটা দেয়।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="প্রশ্ন (সহজ)" state="default">
+      <AppShell>
+        <TopBar slot="top" title="শুরুর যাচাই" />
+        <div class="space-y-4">
+          <ProgressDots total={10} current={2} showCount />
+          <QuestionCard
+            stem="একটি গাড়ি সোজা রাস্তায় সমান বেগে চলছে। এর ত্বরণ কত?"
+            type="mcq"
+            options={['শূন্য', 'ধনাত্মক', 'ঋণাত্মক', 'বলা যায় না']}
+            confidence={3}
+            why="শুরুতে সহজ প্রশ্ন দিয়ে দেখি ভিত্তি কেমন।"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">উত্তর দাও</PrimaryCTA>
+          <SecondaryButton class="shrink-0">জানি না</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="লাইভ অভিযোজন"
+    en="Adaptive Difficulty"
+    note="ঠিক হলে একটু কঠিন, ভুল হলে একটু সহজ — নীরবে। ব্যানার শান্ত, কখনো 'তুমি পারোনি' নয়।"
+    agents="Examiner · Diagnostician"
+  >
+    <PhoneFrame caption="প্রশ্ন (কঠিনতর)" state="adapting">
+      <AppShell>
+        <TopBar slot="top" title="শুরুর যাচাই" />
+        <div class="space-y-4">
+          <ProgressDots total={10} current={5} showCount />
+          <Banner variant="info" icon="↗️">আগেরটা ঠিক হয়েছে — একটু চ্যালেঞ্জ বাড়ালাম।</Banner>
+          <QuestionCard
+            stem="একটি বস্তু ৪ s-এ ০ থেকে ২০ m/s বেগে পৌঁছায়। ত্বরণ কত?"
+            type="numeric"
+            confidence={4}
+            why="তুমি ভালো করছ, তাই হিসাবের প্রশ্নে গেলাম।"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">উত্তর দাও</PrimaryCTA>
+          <SecondaryButton class="shrink-0">জানি না</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="ফলাফল = শুরুর মানচিত্র"
+    en="Placement Result"
+    note="কাঁচা স্কোর নয় — স্কিল-টাইটেলে অনুবাদিত। 'এখান থেকে শুরু' একটি যাত্রা, রায় নয়।"
+    agents="Diagnostician · Planner"
+  >
+    <PhoneFrame caption="ফলাফল" state="default">
+      <AppShell>
+        <TopBar slot="top" title="তোমার শুরুর জায়গা" />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <CompanionBanner kind="affirm" report={false}>
+              চমৎকার! তোমার ভিত্তি বেশ ভালো — কয়েকটা জায়গা একটু পাকা করলেই হবে।
+            </CompanionBanner>
+            <Card class="space-y-1">
+              <h2 class="mb-1 text-h2 font-semibold text-ink">গতি অধ্যায় — এখন কোথায়</h2>
+              {outcomes.map((o) => (
+                <MasteryBar label={o.bn} mastery={o.mastery} attempts={o.attempts} transfer={o.transfer} />
+              ))}
+            </Card>
+          </div>
+          <PrimaryCTA href={url('/c/dashboard')}>এই পরিকল্পনায় শুরু করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

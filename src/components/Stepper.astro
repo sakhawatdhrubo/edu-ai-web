@@ -1,0 +1,32 @@
+---
+// Worked-example "show next step" reveal (fading by mastery tier). Novices see more steps
+// pre-revealed; stronger students get more blanks to fill. Foundation §5/§8 (pace + mastery).
+import Katex from './Katex.astro';
+interface Props {
+  steps: { text: string; tex?: string }[];
+  revealed?: number; // how many steps are shown (rest are "tap to reveal")
+}
+const { steps, revealed = 2 } = Astro.props;
+---
+<ol class="space-y-2">
+  {steps.map((s, i) => {
+    const shown = i < revealed;
+    return (
+      <li
+        class={`flex gap-2.5 rounded-card border p-3 ${
+          shown ? 'border-border bg-surface-raised' : 'border-dashed border-border bg-surface-sunken/50'
+        }`}
+      >
+        <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-surface-sunken text-meta font-semibold text-ink-muted">{i + 1}</span>
+        {shown ? (
+          <div class="text-body leading-relaxed text-ink">
+            <p>{s.text}</p>
+            {s.tex && <Katex tex={s.tex} block />}
+          </div>
+        ) : (
+          <button class="text-label font-medium text-primary">পরের ধাপ দেখাও →</button>
+        )}
+      </li>
+    );
+  })}
+</ol>

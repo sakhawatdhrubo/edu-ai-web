@@ -1,0 +1,20 @@
+{
+  "name": "edu-ai-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mobile-first responsive mockup of the full-app student learning experience (Bangla-first AI physics tutor). Built from edu-ai-planning/04-design/full_app_student_ui_journey.md.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.2",
+    "astro": "^4.16.18",
+    "katex": "^0.16.11",
+    "tailwindcss": "^3.4.15"
+  }
+}

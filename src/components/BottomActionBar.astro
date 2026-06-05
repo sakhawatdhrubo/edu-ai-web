@@ -1,0 +1,9 @@
+---
+// Thumb-zone container for Submit / Skip / Pause / End. Sits above safe-area inset. Foundation §4/§5.
+// Slot content = the action buttons (PrimaryCTA + optional SecondaryButton/TextButton).
+---
+<div
+  class="flex h-actionbar shrink-0 items-center gap-3 border-t border-border bg-surface-raised px-4 pb-[env(safe-area-inset-bottom)]"
+>
+  <slot />
+</div>

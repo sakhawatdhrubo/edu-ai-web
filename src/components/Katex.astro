@@ -1,0 +1,12 @@
+---
+// Inline or block math. Usage: <Katex tex="v = u + at" /> or <Katex tex="s = \tfrac12 a t^2" block />
+import { renderMath } from '@lib/katex';
+interface Props {
+  tex: string;
+  block?: boolean;
+  class?: string;
+}
+const { tex, block = false, class: cls = '' } = Astro.props;
+const html = renderMath(tex, block);
+---
+<span class={`${block ? 'block my-2' : 'inline'} ${cls}`} set:html={html} />

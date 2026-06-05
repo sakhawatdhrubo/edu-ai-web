@@ -1,0 +1,22 @@
+---
+// "কেন?" progressive-disclosure tap revealing the Bangla reason for a question/decision.
+// Transparency pillar (Foundation §1). Uses native <details> so it works without JS.
+interface Props {
+  label?: string;
+  reason?: string;
+}
+const { label = 'কেন?', reason } = Astro.props;
+---
+<details class="group inline-block align-middle">
+  <summary
+    class="inline-flex cursor-pointer list-none items-center gap-1 rounded-pill bg-surface-sunken px-2 py-0.5 text-meta font-medium text-info marker:hidden"
+  >
+    <span aria-hidden="true">💡</span>{label}
+  </summary>
+  {reason && (
+    <p class="mt-1.5 rounded-card bg-info-soft px-3 py-2 text-label leading-relaxed text-ink">{reason}</p>
+  )}
+  {!reason && (
+    <div class="mt-1.5 rounded-card bg-info-soft px-3 py-2 text-label leading-relaxed text-ink"><slot /></div>
+  )}
+</details>

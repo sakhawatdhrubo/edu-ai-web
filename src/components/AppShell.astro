@@ -1,0 +1,17 @@
+---
+// Screen container: fixed top region, single scrollable content region, fixed bottom region.
+// Foundation §4: content region = viewport − (top + bottom); active panel is the only scroller.
+// Slots: "top" (TopBar/PhaseStrip), default (content), "bottom" (BottomNav/BottomActionBar).
+interface Props {
+  pad?: boolean;
+  class?: string;
+}
+const { pad = true, class: cls = '' } = Astro.props;
+---
+<div class={`flex h-full flex-col bg-surface text-ink ${cls}`}>
+  <slot name="top" />
+  <div class={`scroll-area flex-1 ${pad ? 'px-4 py-4' : ''}`}>
+    <slot />
+  </div>
+  <slot name="bottom" />
+</div>

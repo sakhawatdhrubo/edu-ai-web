@@ -1,0 +1,19 @@
+---
+// Brief CSS-only tier-cross celebration. Measured, calm — never confetti/points. Auto-dismiss 2-3s
+// in real app; respects prefers-reduced-motion. Foundation §1/§5.
+import SkillTitleBadge from './SkillTitleBadge.astro';
+import { tierFor } from '@lib/mastery';
+interface Props {
+  toMastery: number; // new mastery after crossing
+}
+const { toMastery } = Astro.props;
+const t = tierFor(toMastery);
+---
+<div class="pointer-events-none absolute inset-0 z-30 grid place-items-center bg-ink/30 p-6">
+  <div class="calm-rise w-full max-w-[280px] rounded-sheet border border-border bg-surface-raised p-6 text-center shadow-sheet">
+    <div class="mb-2 text-display" aria-hidden="true">✦</div>
+    <p class="text-label text-ink-muted">তুমি এগিয়ে গেছ</p>
+    <div class="my-2 flex justify-center"><SkillTitleBadge tier={t} /></div>
+    <p class="text-body text-ink">নতুন ধাপ — {t.title}!</p>
+  </div>
+</div>

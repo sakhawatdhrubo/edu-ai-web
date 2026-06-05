@@ -1,0 +1,39 @@
+---
+// Circular mastery indicator for an outcome. Arc fill in `mastery` tone; pairs with skill-title,
+// never a raw %. Foundation §5.
+import { tierFor } from '@lib/mastery';
+interface Props {
+  mastery: number; // 0..1
+  size?: number;
+  showTitle?: boolean;
+}
+const { mastery, size = 72, showTitle = true } = Astro.props;
+const t = tierFor(mastery);
+const stroke = 7;
+const r = (size - stroke) / 2;
+const c = 2 * Math.PI * r;
+const off = c * (1 - mastery);
+const strokeColor = {
+  faint: 'var(--color-ink-faint)',
+  struggle: 'var(--color-struggle)',
+  info: 'var(--color-info)',
+  mastery: 'var(--color-mastery)',
+}[t.tone];
+---
+<div class="inline-flex flex-col items-center gap-1">
+  <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} class="-rotate-90" role="img" aria-label={t.title}>
+    <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--color-surface-sunken)" stroke-width={stroke} />
+    <circle
+      cx={size / 2}
+      cy={size / 2}
+      r={r}
+      fill="none"
+      stroke={strokeColor}
+      stroke-width={stroke}
+      stroke-linecap="round"
+      stroke-dasharray={c}
+      stroke-dashoffset={off}
+    />
+  </svg>
+  {showTitle && <span class="text-meta font-semibold text-ink-muted">{t.title}</span>}
+</div>

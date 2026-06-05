@@ -1,0 +1,30 @@
+---
+// 1–5 confidence selector. Appears with EVERY practice question, no exception (data instrument,
+// not decoration). Foundation §5. Static mockup: `chosen` highlights the picked value.
+import { bnNum } from '@lib/mastery';
+interface Props {
+  chosen?: number; // 1..5, undefined = none yet
+  label?: string;
+}
+const { chosen, label = 'কত নিশ্চিত?' } = Astro.props;
+---
+<div class="flex items-center gap-2">
+  <span class="text-label text-ink-muted">{label}</span>
+  <div class="flex items-center gap-1.5" role="radiogroup" aria-label={label}>
+    {[1, 2, 3, 4, 5].map((n) => {
+      const on = n === chosen;
+      return (
+        <button
+          type="button"
+          role="radio"
+          aria-checked={on}
+          class={`grid h-9 w-9 place-items-center rounded-full text-label font-semibold ${
+            on ? 'bg-primary text-primary-ink' : 'bg-surface-sunken text-ink-muted'
+          }`}
+        >
+          {bnNum(n)}
+        </button>
+      );
+    })}
+  </div>
+</div>

@@ -1,0 +1,33 @@
+---
+// Socratic / companion message thread. student + tutor variants. Foundation §5.
+import ReportButton from './ReportButton.astro';
+interface Props {
+  from?: 'tutor' | 'student';
+  avatar?: string;
+  typing?: boolean;
+  report?: boolean;
+}
+const { from = 'tutor', avatar = '🦉', typing = false, report = false } = Astro.props;
+const isTutor = from === 'tutor';
+---
+<div class={`flex gap-2 ${isTutor ? '' : 'flex-row-reverse'}`}>
+  {isTutor && <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-sunken text-[15px]" aria-hidden="true">{avatar}</span>}
+  <div class={`max-w-[78%] ${isTutor ? '' : 'items-end'}`}>
+    <div
+      class={`rounded-2xl px-3.5 py-2.5 text-body leading-relaxed ${
+        isTutor ? 'rounded-tl-sm bg-surface-sunken text-ink' : 'rounded-tr-sm bg-primary text-primary-ink'
+      }`}
+    >
+      {typing ? (
+        <span class="inline-flex gap-1 py-1" aria-label="লিখছে">
+          <span class="h-2 w-2 animate-bounce rounded-full bg-ink-faint"></span>
+          <span class="h-2 w-2 animate-bounce rounded-full bg-ink-faint [animation-delay:0.15s]"></span>
+          <span class="h-2 w-2 animate-bounce rounded-full bg-ink-faint [animation-delay:0.3s]"></span>
+        </span>
+      ) : (
+        <slot />
+      )}
+    </div>
+    {isTutor && report && <div class="mt-1"><ReportButton /></div>}
+  </div>
+</div>

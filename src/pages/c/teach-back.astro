@@ -1,0 +1,109 @@
+---
+// Chapter 10 — Teach-Back (takeover). The student explains the concept in their own words (voice or
+// text); the tutor mirrors back what's strong and names one gap. Deepest form of learning (protégé
+// effect). Agents: Examiner · Grader · Tutor.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import PhaseStrip from '@components/PhaseStrip.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import SecondaryButton from '@components/SecondaryButton.astro';
+import QuestionCard from '@components/QuestionCard.astro';
+import ChatBubble from '@components/ChatBubble.astro';
+import CompanionBanner from '@components/CompanionBanner.astro';
+import Card from '@components/Card.astro';
+import SkillTitleBadge from '@components/SkillTitleBadge.astro';
+---
+<CatalogLayout slug="teach-back">
+  <ScreenSection
+    n={1}
+    title="নিজের ভাষায় বোঝাও"
+    en="Teach-back prompt"
+    note="ছাত্রই এখন শিক্ষক। ভয়েস বা লেখা — দুটোই খোলা। কণ্ঠে বললে বাংলা বোঝার ক্ষমতা পরীক্ষিত হয়।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="প্রম্পট" state="default">
+      <AppShell>
+        <TopBar slot="top" title="তুমি বোঝাও" back action="⚙" />
+        <PhaseStrip slot="top" current={5} label="নিজে বোঝানো" />
+        <div class="space-y-4">
+          <CompanionBanner kind="affirm" report={false}>
+            এবার উল্টো — তুমি আমাকে বোঝাও। নিজের ভাষায় বললে বুঝবে সত্যিই কতটা ধরেছ।
+          </CompanionBanner>
+          <QuestionCard
+            stem="ত্বরণ কী, আর বল-ভর-ত্বরণের সম্পর্কটা একজন বন্ধুকে কীভাবে বোঝাবে?"
+            type="voice"
+            why="নিজের ভাষায় ব্যাখ্যা করতে পারা = সবচেয়ে গভীর বোঝা।"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">বলা শুরু করি</PrimaryCTA>
+          <SecondaryButton class="shrink-0">লিখব</SecondaryButton>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="ছাত্রের ব্যাখ্যা"
+    en="Student explains"
+    note="ছাত্রের নিজের ভাষা হুবহু দেখা যায় — পরে ফিডব্যাক এই শব্দগুলোকেই উল্লেখ করবে।"
+    agents="Examiner"
+  >
+    <PhoneFrame caption="ব্যাখ্যা চলছে" state="recording">
+      <AppShell>
+        <TopBar slot="top" title="তুমি বোঝাও" back action="⚙" />
+        <PhaseStrip slot="top" current={5} label="নিজে বোঝানো" />
+        <div class="space-y-3">
+          <ChatBubble from="student">ত্বরণ হলো বেগ কত তাড়াতাড়ি বাড়ছে বা কমছে। বল বেশি দিলে বেশি ত্বরণ হয়, আর ভর বেশি হলে কম হয়।</ChatBubble>
+          <div class="flex items-center gap-3 rounded-card border border-border bg-surface-sunken p-3">
+            <span class="grid h-10 w-10 place-items-center rounded-full bg-danger/10 text-danger" aria-hidden="true">●</span>
+            <span class="text-label text-ink-muted">রেকর্ড হচ্ছে… আরো বলতে পারো</span>
+          </div>
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">শেষ করলাম</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="আয়না-ফিডব্যাক"
+    en="Mirror feedback"
+    note="যা ভালো বলেছে তা তুলে ধরা + ঠিক একটি ফাঁক চিহ্নিত — অভিভূত না করে। স্কিল-টাইটেল এক ধাপ ওঠে।"
+    agents="Grader · Tutor · Companion"
+  >
+    <PhoneFrame caption="ফিডব্যাক" state="feedback">
+      <AppShell>
+        <TopBar slot="top" title="তুমি বোঝাও" back action="⚙" />
+        <PhaseStrip slot="top" current={5} label="নিজে বোঝানো" />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <Card tone="soft" class="space-y-2 text-body leading-relaxed text-ink">
+              <p class="font-semibold text-mastery">✓ যেটা দারুণ বুঝিয়েছ</p>
+              <p>"বল বেশি দিলে বেশি ত্বরণ, ভর বেশি হলে কম" — সম্পর্কটা একদম ঠিক ধরেছ।</p>
+            </Card>
+            <Card class="space-y-2 text-body leading-relaxed text-ink">
+              <p class="font-semibold text-struggle">→ আরেকটু যোগ করলে পূর্ণ হবে</p>
+              <p>ত্বরণের একক (m/s²) আর দিক আছে — এটুকু বললে ব্যাখ্যাটা পুরো হতো।</p>
+            </Card>
+            <div class="flex items-center justify-between">
+              <span class="text-label text-ink-muted">এই আউটকামে</span>
+              <div class="flex items-center gap-2 text-meta text-ink-muted">
+                <SkillTitleBadge mastery={0.62} size="sm" /><span aria-hidden="true">→</span><SkillTitleBadge mastery={0.82} size="sm" />
+              </div>
+            </div>
+          </div>
+          <PrimaryCTA href={url('/c/dashboard')}>দারুণ, শেষ করি</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

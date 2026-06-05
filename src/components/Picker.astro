@@ -1,0 +1,32 @@
+---
+// List-select for profile choices with a "পরে ঠিক করব" (set later) affordance. Foundation §5.
+interface Props {
+  label?: string;
+  options: { key: string; bn: string; icon?: string }[];
+  chosen?: string;
+  setLater?: boolean;
+}
+const { label, options, chosen, setLater = true } = Astro.props;
+---
+<div>
+  {label && <span class="mb-1.5 block text-label text-ink-muted">{label}</span>}
+  <div class="space-y-2">
+    {options.map((o) => {
+      const on = o.key === chosen;
+      return (
+        <button
+          type="button"
+          aria-pressed={on}
+          class={`flex min-h-[48px] w-full items-center gap-3 rounded-card border px-3.5 py-2.5 text-left ${
+            on ? 'border-primary bg-primary-soft' : 'border-border bg-surface-raised hover:bg-surface-sunken'
+          }`}
+        >
+          {o.icon && <span class="text-[18px]" aria-hidden="true">{o.icon}</span>}
+          <span class={`flex-1 text-body ${on ? 'font-semibold text-ink' : 'text-ink'}`}>{o.bn}</span>
+          {on && <span class="text-primary" aria-hidden="true">✓</span>}
+        </button>
+      );
+    })}
+  </div>
+  {setLater && <button class="mt-2 text-label font-medium text-ink-muted">পরে ঠিক করব →</button>}
+</div>

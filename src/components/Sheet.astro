@@ -1,0 +1,25 @@
+---
+// Bottom sheet / drawer for ModalitySwitcher, confirms, pickers. Rounded top corners (radius 20).
+// Tap-outside dismiss, ZERO session-state loss. Foundation §5.
+// Static mockup: rendered in its raised (open) position with a scrim above.
+interface Props {
+  title?: string;
+  open?: boolean;
+}
+const { title, open = true } = Astro.props;
+---
+<div class="pointer-events-none absolute inset-0 z-20 flex flex-col justify-end">
+  <div class={`flex-1 bg-ink/30 ${open ? '' : 'hidden'}`} aria-hidden="true"></div>
+  <div
+    class={`rounded-t-sheet border-t border-border bg-surface-raised px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-2 shadow-sheet ${
+      open ? 'pointer-events-auto' : 'translate-y-full'
+    }`}
+    role="dialog"
+    aria-modal="true"
+    aria-label={title}
+  >
+    <div class="mx-auto mb-3 h-1 w-10 rounded-full bg-border" aria-hidden="true"></div>
+    {title && <h2 class="mb-3 text-h2 font-semibold text-ink">{title}</h2>}
+    <slot />
+  </div>
+</div>

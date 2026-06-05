@@ -1,0 +1,15 @@
+---
+// Base raised container: radius 14, pad 16, surface-raised, soft border. Foundation §4/§5.
+interface Props {
+  class?: string;
+  as?: string;
+  tone?: 'raised' | 'sunken' | 'soft';
+}
+const { class: cls = '', as = 'div', tone = 'raised' } = Astro.props;
+const Tag = as as any;
+const bg =
+  tone === 'sunken' ? 'bg-surface-sunken' : tone === 'soft' ? 'bg-primary-soft' : 'bg-surface-raised';
+---
+<Tag class={`rounded-card border border-border ${bg} p-4 ${cls}`}>
+  <slot />
+</Tag>

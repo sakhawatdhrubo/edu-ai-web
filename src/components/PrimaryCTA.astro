@@ -1,0 +1,19 @@
+---
+// The one large primary button (full-width, 48dp, primary fill). Foundation §5.
+interface Props {
+  href?: string;
+  disabled?: boolean;
+  class?: string;
+}
+const { href, disabled = false, class: cls = '' } = Astro.props;
+const base =
+  'flex h-12 w-full items-center justify-center gap-2 rounded-pill px-5 text-body font-semibold transition-colors';
+const tone = disabled
+  ? 'bg-surface-sunken text-ink-faint cursor-not-allowed'
+  : 'bg-primary text-primary-ink hover:opacity-90';
+---
+{href && !disabled ? (
+  <a href={href} class={`${base} ${tone} ${cls}`}><slot /></a>
+) : (
+  <button type="button" disabled={disabled} class={`${base} ${tone} ${cls}`}><slot /></button>
+)}

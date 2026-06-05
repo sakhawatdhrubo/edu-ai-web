@@ -1,0 +1,116 @@
+---
+// Chapter 8 — Adaptive Help (takeover). What happens when a student is stuck: gated hint-ladder,
+// reteach via misconception confrontation (X→Y→Z + probe), and the repair celebration when a
+// misconception flips. Each hint honestly lowers how much the question can grow mastery.
+// Agents: Diagnostician · Tutor.
+import CatalogLayout from '@layouts/CatalogLayout.astro';
+import { url } from '@lib/nav';
+import ScreenSection from '@components/ScreenSection.astro';
+import PhoneFrame from '@components/PhoneFrame.astro';
+import AppShell from '@components/AppShell.astro';
+import TopBar from '@components/TopBar.astro';
+import PhaseStrip from '@components/PhaseStrip.astro';
+import BottomActionBar from '@components/BottomActionBar.astro';
+import PrimaryCTA from '@components/PrimaryCTA.astro';
+import QuestionCard from '@components/QuestionCard.astro';
+import HintLadder from '@components/HintLadder.astro';
+import ReteachPanel from '@components/ReteachPanel.astro';
+import RepairCelebration from '@components/RepairCelebration.astro';
+import Banner from '@components/Banner.astro';
+import Card from '@components/Card.astro';
+---
+<CatalogLayout slug="adaptive">
+  <ScreenSection
+    n={1}
+    title="হিন্ট-ল্যাডার (লকড)"
+    en="Hint ladder — struggle gate"
+    note="সাহায্য বোতাম দৃশ্যমান কিন্তু ২০s / ১০-অক্ষর গেটে লকড — উৎপাদনশীল সংগ্রামের সুযোগ আগে।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="গেট সক্রিয়" state="locked">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={4} label="অনুশীলন" />
+        <div class="space-y-4">
+          <QuestionCard
+            stem="৪ kg ভরের বস্তুতে ১২ N বল — ত্বরণ কত?"
+            type="numeric"
+            confidence={2}
+          />
+          <HintLadder state="locked" countdown={14} charCount={3} />
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={2}
+    title="হিন্ট-ল্যাডার (ওঠা)"
+    en="Hint ladder — climbing"
+    note="ইশারা → হিন্ট → ধাপে-ধাপে উদাহরণ → পূর্ণ সমাধান। প্রতিটি ধাপ সৎভাবে দেখায় অগ্রগতি কতটা কমছে।"
+    agents="Tutor"
+  >
+    <PhoneFrame caption="ধাপ উন্মোচন" state="climbing">
+      <AppShell>
+        <TopBar slot="top" title="ত্বরণ" back action="⚙" />
+        <PhaseStrip slot="top" current={4} label="অনুশীলন" />
+        <div class="space-y-4">
+          <QuestionCard stem="৪ kg ভরের বস্তুতে ১২ N বল — ত্বরণ কত?" type="numeric" confidence={2} />
+          <HintLadder state="climbing" revealed={2} />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">এবার চেষ্টা করি</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={3}
+    title="রিটিচ — ভুল ধারণা মুখোমুখি"
+    en="Reteach panel"
+    note="বারবার একই ভুল হলে কনফ্রন্ট প্যাটার্ন: 'অনেকে মনে করে X, আসলে Y, কারণ Z' + একটি প্রোব প্রশ্ন।"
+    agents="Diagnostician · Tutor"
+  >
+    <PhoneFrame caption="রিটিচ" state="reteach">
+      <AppShell>
+        <TopBar slot="top" title="একটু থামি" back action="⚙" />
+        <PhaseStrip slot="top" current={3} label="ব্যাখ্যা" />
+        <div class="space-y-4">
+          <ReteachPanel
+            x="বেগ বেশি মানেই ত্বরণ বেশি"
+            y="ত্বরণ নির্ভর করে বেগ কত দ্রুত বদলাচ্ছে তার উপর"
+            z="সমান বেগে চললে বেগ বদলায় না, তাই ত্বরণ শূন্য"
+            probe="একটি ট্রেন ১০০ km/h সমান বেগে চলছে — এর ত্বরণ কি শূন্য?"
+          />
+        </div>
+        <BottomActionBar slot="bottom">
+          <PrimaryCTA href="#">আবার দেখি</PrimaryCTA>
+        </BottomActionBar>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+
+  <ScreenSection
+    n={4}
+    title="ভুল ধারণা ঠিক হলো"
+    en="Misconception repaired"
+    note="প্রোব পাস করলে ভুল ধারণা 'repaired' — স্বতন্ত্র শান্ত মুহূর্ত। এটি অগ্রগতির পাতায় চিহ্নিত হয়।"
+    agents="Diagnostician · Companion"
+  >
+    <PhoneFrame caption="মেরামত" state="repaired">
+      <AppShell>
+        <TopBar slot="top" title="একটু থামি" back action="⚙" />
+        <PhaseStrip slot="top" current={3} label="ব্যাখ্যা" />
+        <div class="flex h-full flex-col">
+          <div class="flex-1 space-y-4">
+            <RepairCelebration concept="বেগ বনাম ত্বরণ" />
+            <Banner variant="mastery" icon="✨">তুমি ঠিক বলেছ — সমান বেগে ত্বরণ শূন্য। এই ভুলটা আর তোমাকে আটকাবে না।</Banner>
+            <Card class="text-body leading-relaxed text-ink-muted">এই ধারণাটা এখন তোমার অগ্রগতির পাতায় "ঠিক হয়েছে" হিসেবে থাকবে।</Card>
+          </div>
+          <PrimaryCTA href={url('/c/core-loop')}>পড়া চালিয়ে যাই</PrimaryCTA>
+        </div>
+      </AppShell>
+    </PhoneFrame>
+  </ScreenSection>
+</CatalogLayout>

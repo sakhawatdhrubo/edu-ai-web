@@ -1,0 +1,15 @@
+---
+// "কিছু ভুল?" affordance attached to EVERY tutor utterance & content asset.
+// Non-negotiable, present everywhere (Foundation §5). Trust pillar.
+interface Props {
+  label?: string;
+}
+const { label = 'কিছু ভুল?' } = Astro.props;
+---
+<button
+  type="button"
+  class="inline-flex items-center gap-1 text-meta text-ink-faint hover:text-ink-muted"
+  aria-label="এই উত্তরটি রিপোর্ট করো"
+>
+  <span aria-hidden="true">⚐</span>{label}
+</button>

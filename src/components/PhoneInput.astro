@@ -1,0 +1,21 @@
+---
+// BD phone input (thin onboarding stub — account is minimized). Foundation §5.
+interface Props {
+  value?: string;
+  label?: string;
+}
+const { value = '', label = 'মোবাইল নম্বর' } = Astro.props;
+---
+<label class="block">
+  <span class="mb-1.5 block text-label text-ink-muted">{label}</span>
+  <div class="flex h-12 items-center rounded-card border border-border bg-surface-sunken px-3.5">
+    <span class="nums mr-2 text-body text-ink-muted">🇧🇩 +৮৮০</span>
+    <input
+      type="tel"
+      inputmode="numeric"
+      value={value}
+      placeholder="1XXXXXXXXX"
+      class="nums h-full flex-1 bg-transparent text-body text-ink placeholder:text-ink-faint focus:outline-none"
+    />
+  </div>
+</label>

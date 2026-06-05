@@ -1,0 +1,32 @@
+---
+// Post-answer response. References the student's SPECIFIC answer (generic "ভালো করেছ" banned).
+// Neutral-warm styling for wrong — never red, never "ভুল!". Foundation §5/§7.
+import WhyChip from './WhyChip.astro';
+import ReportButton from './ReportButton.astro';
+interface Props {
+  correct: boolean;
+  answer: string; // the student's literal answer, echoed verbatim
+  masteryDelta?: string; // e.g. '+ একধাপ' (never a raw float)
+  why?: string;
+}
+const { correct, answer, masteryDelta, why } = Astro.props;
+---
+<div class={`rounded-card p-3.5 ${correct ? 'bg-mastery-soft' : 'bg-struggle-soft'}`}>
+  <div class="flex items-start gap-2.5">
+    <span class="text-[18px]" aria-hidden="true">{correct ? '✓' : '↻'}</span>
+    <div class="flex-1 text-body leading-relaxed text-ink">
+      {correct ? (
+        <p>চমৎকার — তোমার উত্তর <span class="font-semibold">{answer}</span> ঠিক আছে।</p>
+      ) : (
+        <p>তোমার উত্তর এসেছে <span class="font-semibold">{answer}</span>। চলো একসাথে দেখি।</p>
+      )}
+      <div class="mt-2 flex flex-wrap items-center gap-3">
+        {correct && masteryDelta && (
+          <span class="rounded-pill bg-mastery-soft px-2 py-0.5 text-meta font-medium text-mastery">অগ্রগতি {masteryDelta}</span>
+        )}
+        <WhyChip reason={why ?? 'এই ধাপটা কেন গুরুত্বপূর্ণ তা একটু খুলে বলছি।'} />
+        <ReportButton />
+      </div>
+    </div>
+  </div>
+</div>

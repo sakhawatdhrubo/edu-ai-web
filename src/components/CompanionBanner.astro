@@ -1,0 +1,33 @@
+---
+// The tutor's contextual voice strip: affirmation / gentle correction / nudge.
+// Appears only when triggered; one signal at a time. Carries a WhyChip + ReportButton on its utterance.
+// Wrong answers are diagnostic, styled neutral-warm — NEVER red, never "ভুল!". Foundation §5/§7.
+import WhyChip from './WhyChip.astro';
+import ReportButton from './ReportButton.astro';
+interface Props {
+  kind?: 'affirm' | 'correct' | 'nudge' | 'distress';
+  why?: string;
+  report?: boolean;
+  avatar?: string;
+}
+const { kind = 'affirm', why, report = true, avatar = '🦉' } = Astro.props;
+// affirm = mastery-soft, correct/nudge = struggle-soft (warm amber), distress = info-soft (calm)
+const tone = {
+  affirm: 'bg-mastery-soft',
+  correct: 'bg-struggle-soft',
+  nudge: 'bg-struggle-soft',
+  distress: 'bg-info-soft',
+}[kind];
+---
+<div class={`rounded-card ${tone} p-3`}>
+  <div class="flex gap-2.5">
+    <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-raised text-[16px]" aria-hidden="true">{avatar}</span>
+    <div class="flex-1 text-body leading-relaxed text-ink">
+      <slot />
+      <div class="mt-1.5 flex items-center gap-3">
+        {why && <WhyChip reason={why} />}
+        {report && <ReportButton />}
+      </div>
+    </div>
+  </div>
+</div>

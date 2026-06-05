@@ -1,0 +1,11 @@
+---
+// Distinct brief animation when a misconception flips to repaired. Calm, one moment. Foundation §5.
+interface Props {
+  concept?: string;
+}
+const { concept } = Astro.props;
+---
+<div class="calm-rise flex items-center gap-2 rounded-card bg-mastery-soft px-3 py-2.5 text-label text-mastery">
+  <span aria-hidden="true">🔧✨</span>
+  <span>ভুল ধারণা ঠিক হয়ে গেছে{concept ? ` — ${concept}` : ''}!</span>
+</div>

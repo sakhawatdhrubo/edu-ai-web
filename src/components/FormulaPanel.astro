@@ -1,0 +1,40 @@
+---
+// Collapsible 📘 ফর্মুলা side panel (KaTeX). An OVERLAY, never a separate route — session state
+// preserved. Auto-available during Mock Exam (mirrors real-exam allowance). Foundation §5; backlog
+// "Formula Sheet / Reference Card".
+import Katex from './Katex.astro';
+interface Props {
+  open?: boolean;
+}
+const { open = true } = Astro.props;
+const FORMULAS = [
+  { bn: 'সমত্বরণ — বেগ', tex: 'v = u + at' },
+  { bn: 'সমত্বরণ — সরণ', tex: 's = ut + \\tfrac{1}{2}at^2' },
+  { bn: 'বেগ-সরণ সম্পর্ক', tex: 'v^2 = u^2 + 2as' },
+  { bn: 'নিউটনের ২য় সূত্র', tex: 'F = ma' },
+  { bn: 'ভরবেগ (momentum)', tex: 'p = mv' },
+];
+---
+<div class="pointer-events-none absolute inset-0 z-20 flex justify-end">
+  <div class={`flex-1 bg-ink/20 ${open ? '' : 'hidden'}`} aria-hidden="true"></div>
+  <aside
+    class={`pointer-events-auto flex h-full w-[78%] max-w-[300px] flex-col border-l border-border bg-surface-raised shadow-sheet ${
+      open ? '' : 'translate-x-full'
+    }`}
+    aria-label="ফর্মুলা শিট"
+  >
+    <div class="flex items-center justify-between border-b border-border px-4 py-3">
+      <span class="text-h2 font-semibold text-ink">📘 ফর্মুলা</span>
+      <button aria-label="বন্ধ করো" class="grid h-9 w-9 place-items-center rounded-full text-ink-muted hover:bg-surface-sunken">✕</button>
+    </div>
+    <div class="scroll-area flex-1 divide-y divide-border px-4">
+      {FORMULAS.map((f) => (
+        <div class="flex items-center justify-between gap-3 py-3">
+          <span class="text-label text-ink-muted">{f.bn}</span>
+          <Katex tex={f.tex} />
+        </div>
+      ))}
+    </div>
+    <p class="border-t border-border px-4 py-2 text-meta text-ink-faint">গতি অধ্যায় — NCTB অনুমোদিত</p>
+  </aside>
+</div>

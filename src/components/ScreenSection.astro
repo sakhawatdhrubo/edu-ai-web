@@ -1,0 +1,31 @@
+---
+// One screen group inside a chapter page: a heading + optional pedagogy/agent note, then a
+// horizontally-wrapping row of PhoneFrames (default + state variants). Catalog-only chrome.
+import { bnNum } from '@lib/mastery';
+interface Props {
+  n?: number; // screen number within the chapter
+  title: string; // bangla screen title
+  en?: string; // english screen title
+  note?: string; // pedagogy / agent-ownership note
+  agents?: string; // e.g. "Tutor · Examiner"
+}
+const { n, title, en, note, agents } = Astro.props;
+---
+<section class="mb-10">
+  <div class="mb-3 border-l-2 border-primary pl-3">
+    <h2 class="flex flex-wrap items-baseline gap-x-2 text-h2 font-semibold text-ink">
+      {n !== undefined && <span class="nums text-primary">{bnNum(n)}</span>}
+      <span>{title}</span>
+      {en && <span class="text-label font-normal text-ink-faint">· {en}</span>}
+    </h2>
+    {note && <p class="mt-1 max-w-2xl text-label leading-relaxed text-ink-muted">{note}</p>}
+    {agents && (
+      <p class="mt-1 text-meta text-ink-faint">
+        <span class="font-medium text-ink-muted">এজেন্ট:</span> {agents}
+      </p>
+    )}
+  </div>
+  <div class="flex flex-wrap gap-5">
+    <slot />
+  </div>
+</section>

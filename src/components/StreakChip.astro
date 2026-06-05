@@ -1,0 +1,18 @@
+---
+// Streak count + freeze affordance. Gentle, never punitive. No streak-shame. Foundation §5/§1.
+import { bnNum } from '@lib/mastery';
+interface Props {
+  days: number;
+  freezes?: number;
+}
+const { days, freezes = 2 } = Astro.props;
+---
+<div class="inline-flex items-center gap-2 rounded-pill bg-surface-sunken px-3 py-1.5">
+  <span aria-hidden="true">🔥</span>
+  <span class="text-label font-semibold text-ink">{bnNum(days)} দিন</span>
+  {freezes > 0 && (
+    <span class="flex items-center gap-0.5 text-meta text-ink-muted" title="freeze বাকি আছে">
+      <span aria-hidden="true">❄️</span>{bnNum(freezes)}
+    </span>
+  )}
+</div>

@@ -1,0 +1,26 @@
+---
+// Session phase indicator (greet→…→summary). Current dot highlighted + Bangla label.
+// Student always knows which phase they are in. Foundation §5.
+interface Props {
+  phases?: string[];
+  current?: number; // 0-based index
+  label?: string;
+}
+const {
+  phases = ['শুরু', 'প্রস্তুতি', 'প্রশ্ন', 'ব্যাখ্যা', 'অনুশীলন', 'নিজে বোঝানো', 'সারসংক্ষেপ'],
+  current = 2,
+  label,
+} = Astro.props;
+const shown = label ?? phases[current];
+---
+<div class="flex h-9 shrink-0 items-center gap-2 border-b border-border bg-surface-raised px-3">
+  <div class="flex items-center gap-1.5" role="progressbar" aria-valuenow={current + 1} aria-valuemax={phases.length}>
+    {phases.map((_, i) => (
+      <span
+        class={`h-2 w-2 rounded-full ${i === current ? 'bg-primary' : i < current ? 'bg-primary/40' : 'bg-border'}`}
+        aria-hidden="true"
+      ></span>
+    ))}
+  </div>
+  <span class="text-label text-ink-muted">{shown}</span>
+</div>

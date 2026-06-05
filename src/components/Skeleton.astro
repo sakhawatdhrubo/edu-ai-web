@@ -1,0 +1,15 @@
+---
+// In-card loading placeholder for LLM calls. Renders INSIDE the content card — never blanks the
+// screen; top bar + action bar stay live. 8s → graceful Bangla fallback. Foundation §4.
+interface Props {
+  lines?: number;
+  class?: string;
+}
+const { lines = 3, class: cls = '' } = Astro.props;
+const widths = ['100%', '92%', '76%', '85%', '60%'];
+---
+<div class={`space-y-2.5 ${cls}`} role="status" aria-label="লোড হচ্ছে">
+  {Array.from({ length: lines }).map((_, i) => (
+    <div class="skeleton h-4" style={`width:${widths[i % widths.length]}`}></div>
+  ))}
+</div>
